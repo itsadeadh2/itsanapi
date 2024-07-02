@@ -1,0 +1,159 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "AWS CloudFormation Template to deploy a fargate service"
+
+Parameters:
+  Revision:
+    Type: String
+    Description: 'Revision number of the deploy'
+    Default: '0'
+  Memory:
+    Type: String
+    Description: 'The amount of memory you want your task to have'
+    Default: 0.5 GB
+  CPU:
+    Type: String
+    Description: 'The amount of vCPUs you want your task to have'
+    Default: .25 vCPU
+
+Resources:
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub "${AWS::StackName}"
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !GetAtt ECSExecutionRole.Arn
+      TaskRoleArn: !GetAtt ECSExecutionRole.Arn
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: !Ref CPU
+      Memory: !Ref Memory
+      ContainerDefinitions:
+        - Name: !Sub "${AWS::StackName}-${Revision}"
+          Image:
+            !Join
+            - ""
+            - - !ImportValue 'itsanapi-ecr-export'
+              - !Sub ":${Revision}"
+          Essential: true
+          Environment:
+            - Name: PORT
+              Value: 80
+          PortMappings:
+            - ContainerPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              mode: non-blocking
+              max-buffer-size: 25m
+              awslogs-group: !Ref TaskLogGroup
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: ecs
+
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !ImportValue general-cluster-export
+      ServiceName: !Sub "${AWS::StackName}"
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: 1
+      CapacityProviderStrategy:
+        - CapacityProvider: FARGATE_SPOT
+          Weight: 1
+      EnableExecuteCommand: True
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - !ImportValue public-subnet-1-export
+          SecurityGroups:
+            - !Ref SecurityGroup
+          AssignPublicIp: ENABLED
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      LoadBalancers:
+        - ContainerName: !Sub "${AWS::StackName}-${Revision}"
+          ContainerPort: 80
+          TargetGroupArn: !ImportValue itsanapi-elb-targetgroup-export
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !ImportValue vpc-id-export
+      GroupDescription: "Security Group for Fargate Service"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: "0.0.0.0/0"
+
+  ECSExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+      Policies:
+        - PolicyName: "AmazonECSTaskExecutionRolePolicy"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecs:*
+                  - ecr:*
+                  - logs:*
+                  - ec2:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - elb:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - ssm:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:GetFunction
+                Resource: "*"
+
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  TaskLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/ecs/${AWS::StackName}"
+      RetentionInDays: 3
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}"

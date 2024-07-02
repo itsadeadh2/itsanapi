@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "AWS CloudFormation Template to deploy a fargate service"
+
+Parameters:
+  TargetDomain:
+    Type: String
+    Description: 'Target domain for the ALB'
+    Default: "itsadeadh2.com"
+    
+Resources:
+  # Existing resources
+
+  # Create an Application Load Balancer (ALB)
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub "${AWS::StackName}"
+      Subnets:
+        - !ImportValue public-subnet-1-export
+        - !ImportValue public-subnet-2-export
+      SecurityGroups:
+        - !Ref SecurityGroup
+      Scheme: internet-facing
+      LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: "60"
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !ImportValue vpc-id-export
+      GroupDescription: "Security Group for Fargate Service"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: "0.0.0.0/0"
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: "0.0.0.0/0"
+
+  # Create a Target Group for ECS Service
+  ECSTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "${AWS::StackName}"
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue vpc-id-export  # Adjust to your VPC
+      TargetType: ip  # Use IP targeting for Fargate
+      HealthCheckIntervalSeconds: 30  # Health check interval
+      HealthCheckProtocol: HTTP
+      HealthCheckPath: /health  # Health check endpoint
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  # Create an SSL Certificate in ACM
+  SSLCertificate:
+    Type: "AWS::CertificateManager::Certificate"
+    Properties:
+      DomainName: !Sub "${TargetDomain}"
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Sub "${TargetDomain}"
+          HostedZoneId: Z08193793842OMD6P2CI2
+
+  # Create a Listener to route HTTPS traffic from the ALB to the Target Group
+  ALBListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 443  # HTTPS port
+      Protocol: HTTPS
+      SslPolicy: "ELBSecurityPolicy-2016-08"
+      Certificates:
+        - CertificateArn: !Ref SSLCertificate
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ECSTargetGroup
+
+  # Create a Listener to route HTTP traffic from the ALB to the Target Group
+  ALBListenerHTTP:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 80  # HTTP port
+      Protocol: HTTP
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Protocol: HTTPS
+            Port: "443"
+            StatusCode: HTTP_301
+
+  # Create an Alias Record pointing to the ALB
+  DNSAliasRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z08193793842OMD6P2CI2
+      Name: !Sub "${TargetDomain}"  # Subdomain name
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        HostedZoneId: Z3AADJGX6KTTL2
+
+Outputs:
+  PublicSubnet1:
+    Value: !Ref ECSTargetGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-targetgroup-export"
