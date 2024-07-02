@@ -1,12 +1,14 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 from src.infrastructure.resources import (
     health_bp,
     root_bp,
-    contact_bp
+    contact_bp,
+    auth_bp
 )
 
 
@@ -26,9 +28,13 @@ def create_app():
 
     api = Api(app)
 
+    app.config["JWT_SECRET_KEY"] = "foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987"
+    jwt = JWTManager(app)
+
     api.register_blueprint(contact_bp)
     api.register_blueprint(health_bp)
     api.register_blueprint(root_bp)
+    api.register_blueprint(auth_bp)
 
     return app
 

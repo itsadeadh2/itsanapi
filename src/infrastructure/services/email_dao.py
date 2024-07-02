@@ -1,6 +1,6 @@
 import boto3
 
-from src.infrastructure.exc import PersistenceError
+from src.infrastructure.exc import PersistenceError, DbLookupError
 from flask import current_app
 
 
@@ -18,3 +18,10 @@ class EmailDAO:
             )
         except Exception as e:
             raise PersistenceError(f"There was an error when saving the email {str(e)}")
+
+    def query(self):
+        try:
+            response = self.table.scan()
+            return response.get('Items', [])
+        except Exception as e:
+            raise DbLookupError(f"There was an error when querying the emails: {str(e)}")

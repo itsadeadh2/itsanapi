@@ -5,3 +5,4 @@ flask-smorest
 gunicorn
 python-dotenv
 flask-cors
+flask-jwt-extended
