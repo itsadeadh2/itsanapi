@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_smorest import Api
+from flask_cors import CORS
 
 from src.infrastructure.resources import (
     health_bp,
@@ -21,6 +22,7 @@ def create_app():
 
     app.config["TABLE_NAME"] = os.getenv("TABLE_NAME")
     app.config["QUEUE_URL"] = os.getenv("QUEUE_URL")
+    CORS(app)
 
     api = Api(app)
 

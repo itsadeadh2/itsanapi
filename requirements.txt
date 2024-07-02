@@ -4,3 +4,4 @@ Flask
 flask-smorest
 gunicorn
 python-dotenv
+flask-cors
