@@ -1,2 +1,3 @@
-#from .email import bp as email_bp
+from .contact import bp as contact_bp
 from .health import bp as health_bp
+from .root import bp as root_bp

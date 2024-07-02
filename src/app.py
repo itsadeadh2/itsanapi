@@ -2,7 +2,11 @@ import os
 from flask import Flask
 from flask_smorest import Api
 
-from src.infrastructure.resources import health_bp
+from src.infrastructure.resources import (
+    health_bp,
+    root_bp,
+    contact_bp
+)
 
 
 def create_app():
@@ -20,7 +24,9 @@ def create_app():
 
     api = Api(app)
 
+    api.register_blueprint(contact_bp)
     api.register_blueprint(health_bp)
+    api.register_blueprint(root_bp)
 
     return app
 
