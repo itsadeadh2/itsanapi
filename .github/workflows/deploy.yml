@@ -63,6 +63,13 @@ jobs:
           template: cloudformation/ecr.yml
           no-fail-on-empty-changeset: 1
 
+      - name: Deploy DynamoDB
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: ${{ env.service_name }}-table
+          template: cloudformation/dynamo.yml
+          no-fail-on-empty-changeset: 1
+
   push-image:
     name: Push image to ECR
     runs-on: ubuntu-latest
@@ -119,7 +126,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Deploy gateway
+      - name: Deploy ECS
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: ${{ env.service_name }}-ecs
