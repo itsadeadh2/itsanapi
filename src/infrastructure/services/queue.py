@@ -1,5 +1,4 @@
 import boto3
-import os
 
 from src.infrastructure.exc import QueueInteractionError
 

@@ -1,6 +1,5 @@
 from src.infrastructure.exc import InvalidEmailError, PersistenceError, QueueInteractionError, DbLookupError
 from src.infrastructure.services import EmailDAO, Queue
-from flask import jsonify
 
 
 class ContactHandler:
@@ -20,7 +19,7 @@ class ContactHandler:
             return {
                 "message": f"Successfully received contact request. You should receive an email shortly on {email} with my contact information."}, 200
         except InvalidEmailError as e:
-            return {"message":str(e)}, 400
+            return {"message": str(e)}, 400
         except PersistenceError as e:
             return {"message": str(e)}, 500
         except QueueInteractionError as e:
@@ -33,4 +32,3 @@ class ContactHandler:
         except DbLookupError as e:
             print(e)
             return {"mesage": str(e)}, 500
-

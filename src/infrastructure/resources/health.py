@@ -8,4 +8,3 @@ bp = Blueprint("health", "health", description="Healthcheck operations")
 class Health(MethodView):
     def get(self):
         return {'message': "I'm alive"}, 200
-

@@ -15,6 +15,7 @@ class Login(MethodView):
     @inject
     def __init__(self, oauth: OAuthRemoteApp = None):
         self.oauth = oauth
+
     def get(self):
         return self.oauth.authorize(callback=url_for('auth.Authorize', _external=True))
 
@@ -50,7 +51,3 @@ class Logout(MethodView):
         session.pop('google_token', None)
         session.pop('refresh_token', None)
         return redirect(url_for('root.Root'))
-
-
-
-

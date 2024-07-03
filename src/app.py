@@ -6,7 +6,6 @@ from src.setup import add_cors, add_configs, add_resources, AppModule
 from flask_injector import FlaskInjector
 
 
-
 def create_app():
     app = Flask(__name__)
 

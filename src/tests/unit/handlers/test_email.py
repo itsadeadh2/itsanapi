@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 from src.domain.handlers import ContactHandler
-from src.infrastructure.exc import InvalidEmailError, PersistenceError, QueueInteractionError
+from src.infrastructure.exc import PersistenceError, QueueInteractionError
 
 
 class TestEmailHandler(unittest.TestCase):
