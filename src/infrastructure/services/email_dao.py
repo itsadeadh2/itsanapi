@@ -1,7 +1,6 @@
 import boto3
 
 from src.infrastructure.exc import PersistenceError, DbLookupError
-from flask import current_app
 
 
 class EmailDAO:

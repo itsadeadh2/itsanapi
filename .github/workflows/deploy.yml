@@ -131,5 +131,5 @@ jobs:
         with:
           name: ${{ env.service_name }}-ecs
           template: cloudformation/ecs.yml
-          parameter-overrides: "Revision=${{ github.run_id }}"
+          parameter-overrides: "Revision=${{ github.run_id }},GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID  }},GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET  }},FrontendCallbackURL=${{ secrets.FRONTEND_CALLBACK_URL }}"
           no-fail-on-empty-changeset: 1

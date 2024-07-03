@@ -6,3 +6,8 @@ gunicorn
 python-dotenv
 flask-cors
 flask-jwt-extended
+requests
+Flask-OAuthlib
+Werkzeug==2.3
+itsdangerous
+flask-injector

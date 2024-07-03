@@ -14,6 +14,15 @@ Parameters:
     Type: String
     Description: 'The amount of vCPUs you want your task to have'
     Default: .25 vCPU
+  GoogleClientId:
+    Type: String
+    Description: 'Google client id'
+  GoogleClientSecret:
+    Type: String
+    Description: 'Google client secret'
+  FrontendCallbackURL:
+    Type: String
+    Description: 'The callback url of the frontend for oauth'
 
 Resources:
   TaskDefinition:
@@ -40,6 +49,12 @@ Resources:
               Value: !ImportValue "email-worker-sqs-url-export"
             - Name: TABLE_NAME
               Value: !ImportValue "itsanapi-table-name-export"
+            - Name: GOOGLE_CLIENT_ID
+              Value: !Sub "${GoogleClientId}"
+            - Name: GOOGLE_CLIENT_SECRET
+              Value: !Sub "${GoogleClientSecret}"
+            - Name: FRONTEND_CALLBACK_URL
+              Value: !Sub "${FrontendCallbackURL}"
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:
