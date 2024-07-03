@@ -11,3 +11,4 @@ Flask-OAuthlib
 Werkzeug==2.3
 itsdangerous
 flask-injector
+flake8
