@@ -37,4 +37,3 @@ class AppModule(Module):
     @provider
     def provide_logger(self) -> Logger:
         return current_app.logger
-

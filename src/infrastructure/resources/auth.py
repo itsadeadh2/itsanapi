@@ -1,5 +1,4 @@
-from flask import redirect, url_for, session, jsonify, make_response, current_app
-from flask.views import MethodView
+from flask import redirect, url_for, session, make_response, current_app
 from flask_smorest import Blueprint
 from datetime import datetime, timedelta
 from datetime import UTC
