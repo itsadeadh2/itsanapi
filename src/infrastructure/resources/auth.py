@@ -5,32 +5,39 @@ from datetime import datetime, timedelta
 from datetime import UTC
 from injector import inject
 from flask_oauthlib.client import OAuthRemoteApp
+from logging import Logger
+from .base import BaseResource
 
 
 bp = Blueprint('auth', 'auth', description='Authentication routes')
 
 
 @bp.route('/login')
-class Login(MethodView):
+class Login(BaseResource):
     @inject
-    def __init__(self, oauth: OAuthRemoteApp = None):
+    def __init__(self, logger: Logger, oauth: OAuthRemoteApp = None):
+        super().__init__(logger)
         self.oauth = oauth
 
     def get(self):
-        return self.oauth.authorize(callback=url_for('auth.Authorize', _external=True))
+        try:
+            return self.oauth.authorize(callback=url_for('auth.Authorize', _external=True))
+        except Exception as e:
+            self.handle_error(500, e)
 
 
 @bp.route('/login/authorize')
-class Authorize(MethodView):
+class Authorize(BaseResource):
 
     @inject
-    def __init__(self, oauth: OAuthRemoteApp = None):
+    def __init__(self, logger: Logger, oauth: OAuthRemoteApp = None):
+        super().__init__(logger)
         self.oauth = oauth
 
     def get(self):
         response = self.oauth.authorized_response()
         if response is None or response.get('access_token') is None:
-            return jsonify(message='Login failed.'), 401
+            return self.send_response(401, message='Login failed.')
 
         expires_at = datetime.now(UTC) + timedelta(seconds=response.get('expires_in', 0))
         expires_at_unix = int(expires_at.timestamp())
@@ -46,7 +53,11 @@ class Authorize(MethodView):
 
 
 @bp.route('/logout')
-class Logout(MethodView):
+class Logout(BaseResource):
+    @inject
+    def __init__(self, logger: Logger):
+        super().__init__(logger)
+
     def get(self):
         session.pop('google_token', None)
         session.pop('refresh_token', None)
