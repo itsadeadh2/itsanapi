@@ -1,3 +1,5 @@
+from logging import Logger
+
 from injector import Module, provider, singleton
 from src.infrastructure.services import Queue, EmailDAO
 from src.domain.handlers import ContactHandler
@@ -30,3 +32,9 @@ class AppModule(Module):
     @provider
     def provide_oauth(self) -> OAuthRemoteApp:
         return get_google()
+
+    @singleton
+    @provider
+    def provide_logger(self) -> Logger:
+        return current_app.logger
+

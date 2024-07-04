@@ -23,6 +23,11 @@ Parameters:
   FrontendCallbackURL:
     Type: String
     Description: 'The callback url of the frontend for oauth'
+  LogLevel:
+    type: String
+    Description: The desired loglevel for the application
+    AllowedValues: ['debug', 'info', 'warning', 'error', 'fatal', 'critical']
+    Default: 'warning'
 
 Resources:
   TaskDefinition:
@@ -55,6 +60,8 @@ Resources:
               Value: !Sub "${GoogleClientSecret}"
             - Name: FRONTEND_CALLBACK_URL
               Value: !Sub "${FrontendCallbackURL}"
+            - Name: LOG_LEVEL
+              Value: !Sub "${LogLevel}"
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:
