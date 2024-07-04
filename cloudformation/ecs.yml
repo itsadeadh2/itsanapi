@@ -24,10 +24,10 @@ Parameters:
     Type: String
     Description: 'The callback url of the frontend for oauth'
   LogLevel:
-    type: String
+    Type: String
     Description: The desired loglevel for the application
     AllowedValues: ['debug', 'info', 'warning', 'error', 'fatal', 'critical']
-    Default: 'warning'
+    Default: 'info'
 
 Resources:
   TaskDefinition:
