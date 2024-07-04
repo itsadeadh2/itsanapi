@@ -13,10 +13,4 @@ class Health(BaseResource):
         super().__init__(logger)
 
     def get(self):
-        self.logger.debug('debug')
-        self.logger.info('info')
-        self.logger.warning('warning')
-        self.logger.error('error')
-        self.logger.fatal('fatal')
-        self.logger.critical('critical')
         return self.send_response(200, message="I'm alive")
