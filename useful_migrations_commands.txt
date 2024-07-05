@@ -1,0 +1,5 @@
+flask db init # initializes the migrations folder, used in bootstrap
+flask db migrate -m "description of the migration" # creates a migration for the current set of changes
+flask db upgrade # apply the migrations to the database
+
+

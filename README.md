@@ -11,3 +11,4 @@
 - [ ] Get coverage up to 95%
 - [ ] Add relational db for users
 - [ ] Register users on db with oauth
+- [ ] Add local development configuration

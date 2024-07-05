@@ -12,3 +12,5 @@ Werkzeug==2.3
 itsdangerous
 flask-injector
 flake8
+flask-sqlalchemy
+flask-migrate

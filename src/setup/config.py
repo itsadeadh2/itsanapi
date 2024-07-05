@@ -11,7 +11,9 @@ def add_configs(app):
         'consumer_secret': os.getenv('GOOGLE_CLIENT_SECRET'),
     }
     app.config["FRONTEND_CALLBACK_URL"] = os.getenv('FRONTEND_CALLBACK_URL')
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///data.db")
 
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "ITSADEADH2 API"
     app.config["API_VERSION"] = "v1"
