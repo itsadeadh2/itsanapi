@@ -10,7 +10,7 @@ def create_app():
     app = Flask(__name__)
 
     add_configs(app)
-    migrate = add_db(app)
+    add_db(app)
     add_cors(app)
     add_resources(app)
     FlaskInjector(app=app, modules=[AppModule])
@@ -19,5 +19,7 @@ def create_app():
 
 
 if __name__ == '__main__':
+    from dotenv import load_dotenv
+    load_dotenv()
     app = create_app()
     app.run(host='localhost', port=5000)

@@ -12,4 +12,4 @@ class MessageSchema(Schema):
 class UserSchema(Schema):
     email = fields.Str(required=True)
     name = fields.Str(required=True)
-    id = fields.Int(required=True)
+    id = fields.Int(required=False)

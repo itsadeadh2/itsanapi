@@ -1,56 +1,51 @@
-from functools import wraps
+from logging import Logger
 
-from flask_oauthlib.client import OAuth
-from flask import current_app, session, url_for, jsonify
-from datetime import datetime
+from flask_oauthlib.client import OAuthRemoteApp
+from flask import session, url_for
+from datetime import datetime, timedelta
 from datetime import UTC
+from injector import inject
+from src.infrastructure.exc import OAuthLoginFailure
 
 
-oauth = OAuth()
+class OAuthService:
 
-google = oauth.remote_app(
-    'google',
-    app_key='GOOGLE',
-    request_token_params={
-        'scope': 'email',
-    },
-    base_url='https://www.googleapis.com/oauth2/v1/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-)
+    @inject
+    def __init__(self, google: OAuthRemoteApp, logger: Logger):
+        self.google = google
+        self.logger = logger
+        self._set_tokengetter()
 
+    def _set_tokengetter(self):
+        @self.google.tokengetter
+        def get_google_oauth_token():
+            return session.get('google_token')
+        # Assign the decorated function to an instance attribute if needed
+        self.get_google_oauth_token = get_google_oauth_token
 
-@google.tokengetter
-def get_google_oauth_token():
-    return session.get('google_token')
+    def send_authorization_request(self, flask_url: str):
+        return self.google.authorize(callback=url_for(flask_url, _external=True))
 
+    def retrieve_authorization_token(self):
+        response = self.google.authorized_response()
+        if response is None or response.get('access_token') is None:
+            raise OAuthLoginFailure('Login failed.')
 
-def is_token_expired():
-    token_info = session.get('google_token')
-    if not token_info:
-        return True
-    expires_at = token_info.get('expires_at')
-    if not expires_at:
-        return True
-    current_time = int(datetime.now(UTC).timestamp())
-    return current_time > expires_at
+        expires_at = datetime.now(UTC) + timedelta(seconds=response.get('expires_in', 0))
+        expires_at_unix = int(expires_at.timestamp())
+        token_info = {**response, 'expires_at': expires_at_unix}
+        return token_info
 
+    def store_token_info_in_session(self, token_info):
+        session['google_token'] = token_info
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        login_url = url_for('auth.login')
-        unauthorized_response = jsonify(message=f"The resource you're trying to access requires authentication. Go to {login_url}"), 401
+    def log_user_out(self):
+        session.pop('google_token', None)
+        session.pop('refresh_token', None)
 
-        if is_token_expired():
-            return unauthorized_response
+    def get_user_info(self):
+        response = self.get('userinfo')
+        return response.data
 
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-def get_google():
-    oauth.init_app(current_app)
-    return google
+    def get(self, endpoint: str):
+        return self.google.get(endpoint)

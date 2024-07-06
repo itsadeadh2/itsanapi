@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres
+    env_file:
+      - ./.env.docker
+    healthcheck:
+      test: pg_isready -d $${POSTGRES_DB} -U postgres
+      interval: 2s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      dockerfile: ./Dockerfile.dev
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./.env.docker
+    volumes:
+      - ./src:/app/src
+

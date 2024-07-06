@@ -1,5 +1,6 @@
 from .email_dao import EmailDAO
 from .queue import Queue
-from .oauth import get_google
+from .user import UserService
+from .oauth import OAuthService
 
-__all__ = ['EmailDAO', 'Queue', 'get_google']
+__all__ = ['EmailDAO', 'Queue', 'UserService', 'OAuthService']

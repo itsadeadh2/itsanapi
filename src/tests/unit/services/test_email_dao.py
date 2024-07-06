@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock
 
 from src.infrastructure.services import EmailDAO
-from src.infrastructure.exc import PersistenceError
+from src.infrastructure.exc import PersistenceError, DbLookupError
 
 
 class TestEmailDAO(unittest.TestCase):
@@ -26,3 +26,14 @@ class TestEmailDAO(unittest.TestCase):
             }
         }
         self.table.put_item.assert_called_once_with(**expected_call)
+
+    def test_query(self):
+        response = self.email_dao.query()
+        scan_mock = self.table.scan.return_value
+
+        self.assertEqual(response, scan_mock.get.return_value)
+
+    def test_query_failure(self):
+        self.table.scan.side_effect = Exception('foo')
+        with self.assertRaises(DbLookupError):
+            self.email_dao.query()

@@ -9,4 +9,5 @@ exclude =
     build,
     dist
     venv
+    migrations
 max-complexity = 10

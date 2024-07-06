@@ -4,7 +4,7 @@ from src.infrastructure.schemas import EmailSchema
 from injector import inject
 from logging import Logger
 from .base import BaseResource
-
+from src.infrastructure.exc import InvalidEmailError, PersistenceError, QueueInteractionError, DbLookupError
 
 bp = Blueprint("contact", "contact", description="Request contact info")
 
@@ -19,14 +19,23 @@ class Contact(BaseResource):
     @bp.arguments(EmailSchema)
     def post(self, email_data):
         try:
-            data, status = self.handler.handle_post(email_data)
-            return data, status
+            data = self.handler.handle_post(email_data)
+            return data, 200
+        except InvalidEmailError as e:
+            return self.handle_error(400, e)
+        except PersistenceError as e:
+            return self.handle_error(500, e)
+        except QueueInteractionError as e:
+            return self.handle_error(500, e)
         except Exception as e:
-            self.handle_error(500, e)
+            return self.handle_error(500, e)
 
     def get(self):
         try:
-            data, status = self.handler.handle_get()
-            return data, status
+            emails = self.handler.handle_get()
+            data = {'emails': emails}
+            return data, 200
+        except DbLookupError as e:
+            return self.handle_error(500, e)
         except Exception as e:
-            self.handle_error(500, e)
+            return self.handle_error(500, e)
