@@ -74,9 +74,10 @@ Resources:
                 - ""
                 - - "postgresql://"
                   - !Sub "${DbUserName}:${DbPassword}"
+                  - "@"
                   - !ImportValue "itsanapi-db-endpoint-export"
                   - "/"
-                  - myapp
+                  - postgres
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:
