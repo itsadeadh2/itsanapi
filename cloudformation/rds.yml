@@ -52,10 +52,10 @@ Outputs:
     Description: "The endpoint of the RDS instance"
     Value: !GetAtt MyDBInstance.Endpoint.Address
     Export:
-      !Sub "${AWS::StackName}-endpoint-export"
+      Name: !Sub "${AWS::StackName}-endpoint-export"
 
   DBInstancePort:
     Description: "The port of the RDS instance"
     Value: !GetAtt MyDBInstance.Endpoint.Port
     Export:
-      !Sub "${AWS::StackName}-port-export"
+      Name: !Sub "${AWS::StackName}-port-export"
