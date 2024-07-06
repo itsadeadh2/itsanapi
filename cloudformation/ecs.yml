@@ -28,6 +28,12 @@ Parameters:
     Description: The desired loglevel for the application
     AllowedValues: ['debug', 'info', 'warning', 'error', 'fatal', 'critical']
     Default: 'info'
+  DbUserName:
+    Type: String
+    Description: 'Database username'
+  DbPassword:
+    Type: String
+    Description: 'Database password'
 
 Resources:
   TaskDefinition:
@@ -62,6 +68,15 @@ Resources:
               Value: !Sub "${FrontendCallbackURL}"
             - Name: LOG_LEVEL
               Value: !Sub "${LogLevel}"
+            - Name: DATABASE_URL
+              Value:
+                !Join
+                - ""
+                - - "postgresql://"
+                  - !Sub "${DbUserName}:${DbPassword}"
+                  - !ImportValue "itsanapi-db-endpoint-export"
+                  - "/"
+                  - myapp
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:
