@@ -1,38 +1,14 @@
-from unittest.mock import Mock
-from unittest import TestCase
-from faker import Faker
-from flask_injector import FlaskInjector
-from injector import Module, provider, singleton
-from src.domain.handlers import ContactHandler
-from src.app import create_app
-from logging import Logger
 from src.infrastructure.exc import DbLookupError, InvalidEmailError, PersistenceError, QueueInteractionError
+from .base_test import BaseResourcesTest
 
 
-class BaseTestContact(TestCase):
+class BaseTestContact(BaseResourcesTest):
 
     def setUp(self):
-        contact_mock = Mock()
-        logger_mock = Mock()
+        super().setUp()
 
-        class MockInjector(Module):
-            @singleton
-            @provider
-            def provide_contact_handler(self) -> ContactHandler:
-                return contact_mock
-
-            @singleton
-            @provider
-            def provide_logger(self) -> Logger:
-                return logger_mock
-
-        self.contact_mock = contact_mock
-        self.logger_mock = logger_mock
-
-        app = create_app()
-        FlaskInjector(app=app, modules=[MockInjector])
-        self.app = app.test_client()
-        self.fake = Faker()
+        self.contact_mock = self.mocks.get('contact_mock')
+        self.logger_mock = self.mocks.get('logger_mock')
 
 
 class TestContactPost(BaseTestContact):

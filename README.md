@@ -13,3 +13,5 @@
 - [x] Add relational db for users
 - [x] Register users on db with oauth
 - [ ] Add local development configuration
+- [ ] Implement games endpoint
+- [ ] Implement hangman game

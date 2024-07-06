@@ -4,6 +4,7 @@ from src.infrastructure.resources import (
     root_bp,
     contact_bp,
     auth_bp,
+    hangman_bp
 )
 
 
@@ -14,3 +15,4 @@ def add_resources(app):
     api.register_blueprint(health_bp)
     api.register_blueprint(root_bp)
     api.register_blueprint(auth_bp)
+    api.register_blueprint(hangman_bp)
