@@ -37,7 +37,6 @@ Resources:
       DBInstanceClass: db.t2.micro
       DBInstanceIdentifier: my-postgres-db
       Engine: postgres
-      EngineVersion: 13.4 # Specify the version you want
       MasterUsername: !Sub "${DbUserName}"
       MasterUserPassword: !Sub "${DbPassword}"
       VPCSecurityGroups:
