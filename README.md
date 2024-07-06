@@ -9,7 +9,7 @@
 - Docs are **[here](https://itsadeadh2.github.io/commodore-docs/category/rest-api)**
 
 ### TODO
-- [ ] Get coverage up to 95%
-- [ ] Add relational db for users
-- [ ] Register users on db with oauth
+- [x] Get coverage up to 95%
+- [x] Add relational db for users
+- [x] Register users on db with oauth
 - [ ] Add local development configuration
