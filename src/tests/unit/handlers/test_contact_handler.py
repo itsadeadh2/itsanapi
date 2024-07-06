@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import Mock
 from src.domain.handlers import ContactHandler
-from src.infrastructure.exc import PersistenceError, QueueInteractionError, DbLookupError
 from faker import Faker
 
 

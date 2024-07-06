@@ -33,9 +33,6 @@ class TestGetUserByEmail(BaseUserTest):
     @patch('src.infrastructure.services.user.UserModel')
     def test_returns_false_if_user_dont_exist(self, mock_user_model):
         email = self.fake.email()
-        dummy_user = {
-            'email': email
-        }
         mock_result = Mock()
         mock_result.first.return_value = {}
         mock_user_model.query.filter.return_value = mock_result
@@ -144,5 +141,5 @@ class TestAddUserToDb(BaseUserTest):
 
         self.db.session.add.side_effect = Exception('foo')
         with self.assertRaises(Exception):
-            result = self.user_service.add_user_to_db(user_data=fake_data)
+            self.user_service.add_user_to_db(user_data=fake_data)
         self.db.session.rollback.assert_called_once()

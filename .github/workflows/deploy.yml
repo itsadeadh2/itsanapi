@@ -75,6 +75,14 @@ jobs:
           template: cloudformation/dynamo.yml
           no-fail-on-empty-changeset: 1
 
+      - name: Deploy RDS
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: ${{ env.service_name }}-db
+          template: cloudformation/rds.yml
+          parameter-overrides: "DbUserName=${{ secrets.DB_USERNAME }},DbPassword=${{ secrets.DB_PASSWORD }}"
+          no-fail-on-empty-changeset: 1
+
   push-image:
     name: Push image to ECR
     runs-on: ubuntu-latest
@@ -131,10 +139,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Deploy ECS
-        uses: aws-actions/aws-cloudformation-github-deploy@v1
-        with:
-          name: ${{ env.service_name }}-ecs
-          template: cloudformation/ecs.yml
-          parameter-overrides: "Revision=${{ github.run_id }},GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID  }},GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET  }},FrontendCallbackURL=${{ secrets.FRONTEND_CALLBACK_URL }}"
-          no-fail-on-empty-changeset: 1
+      #- name: Deploy ECS
+      #  uses: aws-actions/aws-cloudformation-github-deploy@v1
+      #  with:
+      #    name: ${{ env.service_name }}-ecs
+      #    template: cloudformation/ecs.yml
+      #    parameter-overrides: "Revision=${{ github.run_id }},GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID  }},GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET  }},FrontendCallbackURL=${{ secrets.FRONTEND_CALLBACK_URL }}"
+      #    no-fail-on-empty-changeset: 1

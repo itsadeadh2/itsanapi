@@ -86,4 +86,3 @@ class AppModule(Module):
     @provider
     def provide_user_schema(self) -> UserSchema:
         return UserSchema()
-

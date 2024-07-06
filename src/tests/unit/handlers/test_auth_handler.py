@@ -50,5 +50,6 @@ class TestAuthHandler(unittest.TestCase):
         self.handler.handle_logout_request()
         self.oauth_service.log_user_out.assert_called_once()
 
+
 if __name__ == "__main__":
     unittest.main()
