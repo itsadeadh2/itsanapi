@@ -1,16 +1,21 @@
 from logging import Logger
 
-from injector import Module, provider, singleton
-from src.infrastructure.services import Queue, EmailDAO
-from src.domain.handlers import ContactHandler, AuthHandler
+import boto3
 from flask import current_app
+from flask_oauthlib.client import OAuth
 from flask_oauthlib.client import OAuthRemoteApp
 from flask_sqlalchemy import SQLAlchemy
+from injector import Module, provider, singleton
+
+from src.database.daos import EmailDAO
 from src.database.db import db
-from src.infrastructure.services import UserService
-from flask_oauthlib.client import OAuth
-from src.infrastructure.services import OAuthService
+from src.domain.handlers import ContactHandler, AuthHandler
 from src.infrastructure.schemas import UserSchema
+from src.infrastructure.services import (
+    OAuthService,
+    Queue,
+    UserService
+)
 
 
 # TODO: break this down into smaller components later
@@ -18,8 +23,10 @@ class AppModule(Module):
     @singleton
     @provider
     def provide_email_dao(self) -> EmailDAO:
+        dynamo = boto3.resource('dynamodb')
         return EmailDAO(
-            table_name=current_app.config.get('TABLE_NAME')
+            table_name=current_app.config.get('TABLE_NAME'),
+            db=dynamo
         )
 
     @singleton

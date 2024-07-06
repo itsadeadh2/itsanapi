@@ -1,4 +1,5 @@
-from src.infrastructure.services import EmailDAO, Queue
+from src.infrastructure.services import Queue
+from src.database.daos import EmailDAO
 
 
 class ContactHandler:

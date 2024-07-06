@@ -25,6 +25,9 @@ class UserAlreadyExistsError(Exception):
 class OAuthLoginFailure(Exception):
     pass
 
+class GameCreationError(Exception):
+    pass
+
 
 def get_error_info():
     (exception_type, exception_value, exception_traceback) = sys.exc_info()

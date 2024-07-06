@@ -1,12 +1,8 @@
-import boto3
-
+from .base_dynamodb_dao import DynamoDAO
 from src.infrastructure.exc import PersistenceError, DbLookupError
 
 
-class EmailDAO:
-    def __init__(self, table_name, db=None):
-        self.db = db or boto3.resource('dynamodb')
-        self.table = self.db.Table(table_name)
+class EmailDAO (DynamoDAO):
 
     def save(self, email):
         try:

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from src.infrastructure.services import EmailDAO
+from src.database.daos import EmailDAO
 from src.infrastructure.exc import PersistenceError, DbLookupError
 
 
