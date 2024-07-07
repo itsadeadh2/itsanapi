@@ -1,11 +1,13 @@
-from unittest.mock import Mock
+from logging import Logger
 from unittest import TestCase
+from unittest.mock import Mock
+
 from faker import Faker
 from flask_injector import FlaskInjector
 from injector import Module, provider, singleton
-from src.domain.handlers import ContactHandler
+
 from src.app import create_app
-from logging import Logger
+from src.domain.handlers import ContactHandler
 
 
 class BaseResourcesTest(TestCase):
@@ -22,7 +24,6 @@ class BaseResourcesTest(TestCase):
             @provider
             def provide_logger(self) -> Logger:
                 return logger_mock
-
 
             @singleton
             @provider

@@ -1,8 +1,9 @@
+from abc import ABC
+from logging import Logger
+
 from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import abort
-from logging import Logger
-from abc import ABC
 
 from src.infrastructure.exc import get_error_info
 

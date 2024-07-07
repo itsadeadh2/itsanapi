@@ -39,4 +39,3 @@ class HangmanGuesSchema(Schema):
 class HangmanScoreSchema(Schema):
     name = fields.Str(required=True)
     score = fields.Int(required=True)
-

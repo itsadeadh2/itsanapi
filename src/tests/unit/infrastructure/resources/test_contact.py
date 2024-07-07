@@ -45,4 +45,3 @@ class TestContactGet(BaseTestContact):
         res = self.app.get('/api/contact')
         self.contact_mock.handle_get.assert_called_once()
         self.assertEqual(res.status_code, 500)
-

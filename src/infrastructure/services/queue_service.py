@@ -1,5 +1,6 @@
 import boto3
 
+
 class QueueService:
     def __init__(self, queue_url, sqs=None):
         self.sqs = sqs or boto3.client('sqs')

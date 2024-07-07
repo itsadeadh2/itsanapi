@@ -1,13 +1,15 @@
-from flask_smorest import Blueprint
 from logging import Logger
-from injector import inject
-from .base import BaseResource
+
 from flask_jwt_extended import (
     jwt_required,
 )
-from src.infrastructure.schemas import UserSchema
-from src.infrastructure.exc import UserAlreadyExists, InvalidCredentials
+from flask_smorest import Blueprint
+from injector import inject
+
 from src.domain.handlers import UserHandler
+from src.infrastructure.exc import UserAlreadyExists, InvalidCredentials
+from src.infrastructure.schemas import UserSchema
+from .base import BaseResource
 
 bp = Blueprint("user", "user", description="User operations", url_prefix="/api/user")
 

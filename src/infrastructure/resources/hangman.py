@@ -5,9 +5,9 @@ from flask_smorest import Blueprint
 from injector import inject
 
 from src.domain.handlers import HangmanHandler
+from src.infrastructure.exc import GameNotFound, GameOver
 from src.infrastructure.schemas import HangmanGameSchema, HangmanGuesSchema, HangmanScoreSchema
 from .base import BaseResource
-from src.infrastructure.exc import GameNotFound, GameOver
 
 bp = Blueprint("hangman", "hangman", description="Play a game of hangman", url_prefix="/api/games/hangman")
 
@@ -52,6 +52,7 @@ class GetGame(BaseResource):
             return self.handle_error(404, e)
         except Exception as e:
             return self.handle_error(500, e)
+
 
 @bp.route('/<string:game_id>/guess')
 class TakeGuess(BaseResource):

@@ -1,13 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
-from passlib.hash import pbkdf2_sha256
-
-from src.database.models import UserModel, ExpiredTokensModel
-from src.infrastructure.exc import UserAlreadyExists, InvalidCredentials
 from flask_jwt_extended import (
     create_access_token,
     get_jwt,
     get_jwt_identity
 )
+from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import pbkdf2_sha256
+
+from src.database.models import UserModel, ExpiredTokensModel
+from src.infrastructure.exc import UserAlreadyExists, InvalidCredentials
 
 
 class UserService:

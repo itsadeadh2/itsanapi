@@ -1,5 +1,5 @@
-import traceback
 import sys
+import traceback
 
 
 class UserAlreadyExists(Exception):
@@ -13,9 +13,9 @@ class InvalidCredentials(Exception):
 class GameNotFound(Exception):
     pass
 
+
 class GameOver(Exception):
     pass
-
 
 
 def get_error_info():

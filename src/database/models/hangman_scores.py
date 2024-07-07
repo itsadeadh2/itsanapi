@@ -10,5 +10,3 @@ class HangmanScoresModel(db.Model):
     # Player relationship
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("UserModel", back_populates="hangman_score")
-
-

@@ -1,14 +1,11 @@
 from logging import Logger
 
 from flask import current_app
-from flask_oauthlib.client import OAuth
-from flask_oauthlib.client import OAuthRemoteApp
 from flask_sqlalchemy import SQLAlchemy
 from injector import Module, provider, singleton
 
 from src.database.db import db
 from src.domain.handlers import ContactHandler, UserHandler, HangmanHandler
-from src.infrastructure.schemas import UserSchema
 from src.infrastructure.services import (
     QueueService, ContactRequestService, UserService, HangmanService
 )
@@ -62,4 +59,3 @@ class AppModule(Module):
     @provider
     def provide_db(self) -> SQLAlchemy:
         return db
-

@@ -2,7 +2,6 @@ from enum import Enum
 
 from faker import Faker
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import joinedload
 
 from src.database.models import HangmanGamesModel, HangmanScoresModel
 from src.infrastructure.exc import GameNotFound, GameOver
@@ -19,9 +18,22 @@ class HangmanService:
         self.db = db
         self.faker = Faker()
 
+    # UTILS #
     def get_masked_text(self, text):
         return ''.join(['_' for x in text])
 
+    def check_guess(self, guess: str, solution: str):
+        success = False
+        mask_result = ''
+        for idx, c in enumerate(solution):
+            char_result = '_'
+            if guess.lower() == c.lower():
+                success = True
+                char_result = guess
+            mask_result += char_result
+        return success, mask_result
+
+    # GAME LOGIC #
     def create_game(self, user_id):
         solution = self.faker.word()
         game_data = {
@@ -45,25 +57,6 @@ class HangmanService:
         except Exception:
             raise GameNotFound("Unable to find game")
 
-    def check_guess(self, guess: str, solution: str):
-        success = False
-        mask_result = ''
-        for idx, c in enumerate(solution):
-            char_result = '_'
-            if guess.lower() == c.lower():
-                success = True
-                char_result = guess
-            mask_result += char_result
-        return success, mask_result
-
-    def get_or_create_score(self, user_id):
-        score = HangmanScoresModel.query.filter(HangmanScoresModel.user_id == user_id).first()
-        if not score:
-            score = HangmanScoresModel()
-            score.user_id = user_id
-            score.score = 0
-        return score
-
     def finish_game(self, game: HangmanGamesModel, status: GameStatus):
         game.status = status.value
 
@@ -80,6 +73,10 @@ class HangmanService:
         self.db.session.commit()
         return game
 
+    def get_all_games(self, user_id):
+        return HangmanGamesModel.query.filter(HangmanGamesModel.user_id == user_id)
+
+    # GUESS LOGIC #
     def handle_correct_guess(self, game: HangmanGamesModel, masked_result):
         merged_masked_result = list(game.masked_word)
         for idx, c in enumerate(masked_result):
@@ -98,7 +95,7 @@ class HangmanService:
         return self.save_game(game=game)
 
     def take_guess(self, guess, game: HangmanGamesModel):
-        if game.status in ['game_lost', 'game_won']:
+        if game.status in [GameStatus.WON.value, GameStatus.LOST.value]:
             raise GameOver("Sorry but this game is already over.")
 
         solution = game.solution
@@ -107,14 +104,17 @@ class HangmanService:
         success, masked_result = self.check_guess(guess=guess, solution=solution)
 
         if success:
-            game = self.handle_correct_guess(game=game, masked_result=masked_result)
-        else:
-            game = self.handle_wrong_guess(game=game)
+            return self.handle_correct_guess(game=game, masked_result=masked_result)
+        return self.handle_wrong_guess(game=game)
 
-        return game
-
-    def get_all_games(self, user_id):
-        return HangmanGamesModel.query.filter(HangmanGamesModel.user_id == user_id)
+    # SORE LOGIC #
+    def get_or_create_score(self, user_id):
+        score = HangmanScoresModel.query.filter(HangmanScoresModel.user_id == user_id).first()
+        if not score:
+            score = HangmanScoresModel()
+            score.user_id = user_id
+            score.score = 0
+        return score
 
     def get_leaderboard(self):
         results = self.db.session.query(HangmanScoresModel).all()

@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+
 from src.database.models import ContactRequestsModel
 
 

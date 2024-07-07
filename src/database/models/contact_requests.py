@@ -1,5 +1,6 @@
-from src.database.db import db
 from sqlalchemy import func
+
+from src.database.db import db
 
 
 class ContactRequestsModel(db.Model):

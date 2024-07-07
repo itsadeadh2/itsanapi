@@ -1,7 +1,9 @@
-from flask_smorest import Blueprint
 from logging import Logger
+
 from flask import redirect
+from flask_smorest import Blueprint
 from injector import inject
+
 from .base import BaseResource
 
 bp = Blueprint("root", "root", description="Root route operations")

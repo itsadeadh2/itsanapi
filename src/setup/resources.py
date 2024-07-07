@@ -1,4 +1,5 @@
 from flask_smorest import Api
+
 from src.infrastructure.resources import (
     health_bp,
     root_bp,

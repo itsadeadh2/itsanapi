@@ -1,5 +1,6 @@
-from flask_jwt_extended import JWTManager
 from flask import jsonify
+from flask_jwt_extended import JWTManager
+
 from src.database.models import ExpiredTokensModel
 
 
