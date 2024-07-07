@@ -15,3 +15,4 @@
 - [ ] Add local development configuration
 - [ ] Implement games endpoint
 - [ ] Implement hangman game
+- [ ] Change email storage to RDS

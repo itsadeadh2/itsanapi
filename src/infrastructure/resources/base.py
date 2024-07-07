@@ -15,7 +15,7 @@ class BaseResource(ABC, MethodView):
         _, _, traceback = get_error_info()
         self.logger.error(str(exception))
         self.logger.error(traceback)
-        return abort(status_code, exception)
+        return abort(status_code, message=str(exception))
 
     def send_response(self, status_code: int, *args, **kwargs):
         return jsonify(*args, **kwargs), status_code

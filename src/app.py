@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from flask import Flask
-from src.setup import add_cors, add_configs, add_resources, AppModule, add_db
+from src.setup import add_cors, add_configs, add_resources, AppModule, add_db, add_jwt_config
 from flask_injector import FlaskInjector
 
 
@@ -13,6 +13,7 @@ def create_app():
     add_db(app)
     add_cors(app)
     add_resources(app)
+    add_jwt_config(app)
     FlaskInjector(app=app, modules=[AppModule])
 
     return app

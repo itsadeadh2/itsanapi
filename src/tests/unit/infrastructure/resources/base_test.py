@@ -3,7 +3,7 @@ from unittest import TestCase
 from faker import Faker
 from flask_injector import FlaskInjector
 from injector import Module, provider, singleton
-from src.domain.handlers import AuthHandler, ContactHandler, HangmanHandler
+from src.domain.handlers import ContactHandler
 from src.app import create_app
 from logging import Logger
 
@@ -23,20 +23,11 @@ class BaseResourcesTest(TestCase):
             def provide_logger(self) -> Logger:
                 return logger_mock
 
-            @singleton
-            @provider
-            def provide_auth_handler(self) -> AuthHandler:
-                return auth_mock
 
             @singleton
             @provider
             def provide_contact_handler(self) -> ContactHandler:
                 return contact_mock
-
-            @singleton
-            @provider
-            def provide_hangman_service(self) -> HangmanHandler:
-                return hangman_mock
 
         self.mocks = {
             'auth_mock': auth_mock,

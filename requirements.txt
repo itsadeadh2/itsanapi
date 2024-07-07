@@ -7,7 +7,6 @@ python-dotenv
 flask-cors
 flask-jwt-extended
 requests
-Flask-OAuthlib
 Werkzeug==2.3
 itsdangerous
 flask-injector
@@ -16,3 +15,4 @@ flask-sqlalchemy
 flask-migrate
 psycopg2-binary
 Faker
+passlib

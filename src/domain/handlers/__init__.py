@@ -1,5 +1,5 @@
 from .contact_handler import ContactHandler
-from .auth_handler import AuthHandler
+from .user_handler import UserHandler
 from .hangman_handler import HangmanHandler
 
-__all__ = ['ContactHandler', 'AuthHandler', 'HangmanHandler']
+__all__ = ['ContactHandler', 'UserHandler', 'HangmanHandler']

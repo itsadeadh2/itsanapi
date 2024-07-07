@@ -2,31 +2,20 @@ import traceback
 import sys
 
 
-class InvalidEmailError(ValueError):
+class UserAlreadyExists(Exception):
     pass
 
 
-class PersistenceError(ValueError):
+class InvalidCredentials(Exception):
     pass
 
 
-class DbLookupError(Exception):
+class GameNotFound(Exception):
     pass
 
-
-class QueueInteractionError(ValueError):
+class GameOver(Exception):
     pass
 
-
-class UserAlreadyExistsError(Exception):
-    pass
-
-
-class OAuthLoginFailure(Exception):
-    pass
-
-class GameCreationError(Exception):
-    pass
 
 
 def get_error_info():

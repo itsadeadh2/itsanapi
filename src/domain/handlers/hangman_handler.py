@@ -1,37 +1,29 @@
-from logging import Logger
-from injector import inject
-from src.infrastructure.services import OAuthService, UserService
-from src.infrastructure.exc import GameCreationError
-from src.database.daos import HangmanDao
+from src.infrastructure.services import HangmanService, UserService
 
 
 class HangmanHandler:
-
-    @inject
-    def __init__(self, logger: Logger, oauth_service: OAuthService, user_service: UserService, hangman_dao: HangmanDao):
-        self.__logger = logger
-        self.__oauth = oauth_service
-        self.__user = user_service
-        self.__dao = hangman_dao
-
-    def get_player_data(self):
-        try:
-            oauth_info = self.__oauth.get_user_info()
-            return self.__user.get_user_by_email(oauth_info.get('email'))
-        except Exception:
-            return False
+    def __init__(self, hangman_service: HangmanService, user_service: UserService):
+        self.hangman_service = hangman_service
+        self.user_service = user_service
 
     def create_game(self):
-        try:
-            player_data = self.get_player_data()
-            if not player_data:
-                return self.create_guest_game()
-            return self.create_user_game(player_data=player_data)
-        except Exception as e:
-            raise GameCreationError(str(e))
+        user = self.user_service.get_user_from_token()
+        return self.hangman_service.create_game(user_id=user.id)
 
-    def create_guest_game(self):
-        return self.__dao.create_game()
+    def get_game(self, game_id):
+        user = self.user_service.get_user_from_token()
+        return self.hangman_service.get_game(game_id=game_id, user_id=user.id)
 
-    def create_user_game(self, player_data: dict):
-        return self.__dao.create_game(player_data=player_data)
+    def take_guess(self, guess, game_id):
+        game = self.get_game(game_id=game_id)
+        return self.hangman_service.take_guess(
+            guess=guess,
+            game=game
+        )
+
+    def get_all_games(self):
+        user = self.user_service.get_user_from_token()
+        return self.hangman_service.get_all_games(user_id=user.id)
+
+    def get_leaderboard(self):
+        return self.hangman_service.get_leaderboard()

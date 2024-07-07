@@ -1,4 +1,3 @@
-from src.infrastructure.exc import DbLookupError, InvalidEmailError, PersistenceError, QueueInteractionError
 from .base_test import BaseResourcesTest
 
 
@@ -31,30 +30,6 @@ class TestContactPost(BaseTestContact):
         res = self.app.post('/api/contact', json=email_data)
         self.assertEqual(res.status_code, 500)
 
-    def test_return_400_if_invalid_exception_is_raised(self):
-        email_data = {
-            'email': self.fake.email()
-        }
-        self.contact_mock.handle_post.side_effect = InvalidEmailError('foo')
-        res = self.app.post('/api/contact', json=email_data)
-        self.assertEqual(res.status_code, 400)
-
-    def test_return_500_if_persistence_error_is_raised(self):
-        email_data = {
-            'email': self.fake.email()
-        }
-        self.contact_mock.handle_post.side_effect = PersistenceError('foo')
-        res = self.app.post('/api/contact', json=email_data)
-        self.assertEqual(res.status_code, 500)
-
-    def test_return_500_if_queue_error_is_raised(self):
-        email_data = {
-            'email': self.fake.email()
-        }
-        self.contact_mock.handle_post.side_effect = QueueInteractionError('foo')
-        res = self.app.post('/api/contact', json=email_data)
-        self.assertEqual(res.status_code, 500)
-
 
 class TestContactGet(BaseTestContact):
 
@@ -71,8 +46,3 @@ class TestContactGet(BaseTestContact):
         self.contact_mock.handle_get.assert_called_once()
         self.assertEqual(res.status_code, 500)
 
-    def test_return_500_if_db_lookup_is_raised(self):
-        self.contact_mock.handle_get.side_effect = DbLookupError('foo')
-        res = self.app.get('/api/contact')
-        self.contact_mock.handle_get.assert_called_once()
-        self.assertEqual(res.status_code, 500)
