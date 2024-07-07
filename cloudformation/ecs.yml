@@ -58,8 +58,6 @@ Resources:
           Environment:
             - Name: QUEUE_URL
               Value: !ImportValue "email-worker-sqs-url-export"
-            - Name: TABLE_NAME
-              Value: !ImportValue "itsanapi-table-name-export"
             - Name: GOOGLE_CLIENT_ID
               Value: !Sub "${GoogleClientId}"
             - Name: GOOGLE_CLIENT_SECRET
