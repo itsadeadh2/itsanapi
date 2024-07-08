@@ -114,6 +114,8 @@ class HangmanService:
             score = HangmanScoresModel()
             score.user_id = user_id
             score.score = 0
+        self.db.session.add(score)
+        self.db.session.commit()
         return score
 
     def get_leaderboard(self):

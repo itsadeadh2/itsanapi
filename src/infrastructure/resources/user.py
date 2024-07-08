@@ -8,7 +8,7 @@ from injector import inject
 
 from src.domain.handlers import UserHandler
 from src.infrastructure.exc import UserAlreadyExists, InvalidCredentials
-from src.infrastructure.schemas import UserSchema
+from src.infrastructure.schemas import UserSchema, UserLoginSchema
 from .base import BaseResource
 
 bp = Blueprint("user", "user", description="User operations", url_prefix="/api/user")
@@ -39,7 +39,7 @@ class Login(BaseResource):
         super().__init__(logger=logger)
         self.handler = user_handler
 
-    @bp.arguments(UserSchema)
+    @bp.arguments(UserLoginSchema)
     def post(self, user_data):
         try:
             access_token = self.handler.log_in_user(user_data)

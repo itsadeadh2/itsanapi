@@ -42,8 +42,8 @@ class AppModule(Module):
 
     @singleton
     @provider
-    def provide_user_handler(self, user_service: UserService) -> UserHandler:
-        return UserHandler(user_service=user_service)
+    def provide_user_handler(self, user_service: UserService, hangman_service: HangmanService) -> UserHandler:
+        return UserHandler(user_service=user_service, hangman_service=hangman_service)
 
     @singleton
     @provider

@@ -9,10 +9,10 @@ from src.infrastructure.exc import GameNotFound, GameOver
 from src.infrastructure.schemas import HangmanGameSchema, HangmanGuesSchema, HangmanScoreSchema
 from .base import BaseResource
 
-bp = Blueprint("hangman", "hangman", description="Play a game of hangman", url_prefix="/api/games/hangman")
+bp = Blueprint("hangman", "hangman", description="Play a game of hangman", url_prefix="/api/games")
 
 
-@bp.route('/')
+@bp.route('/hangman')
 class HangmanList(BaseResource):
     @inject
     def __init__(self, logger: Logger, handler: HangmanHandler):
@@ -36,7 +36,7 @@ class HangmanList(BaseResource):
             return self.handle_error(500, e)
 
 
-@bp.route('/<string:game_id>')
+@bp.route('/hangman/<string:game_id>')
 class GetGame(BaseResource):
     @inject
     def __init__(self, logger: Logger, handler: HangmanHandler):
@@ -54,7 +54,7 @@ class GetGame(BaseResource):
             return self.handle_error(500, e)
 
 
-@bp.route('/<string:game_id>/guess')
+@bp.route('/hangman/<string:game_id>/guess')
 class TakeGuess(BaseResource):
     @inject
     def __init__(self, logger: Logger, handler: HangmanHandler):
@@ -71,7 +71,7 @@ class TakeGuess(BaseResource):
             return self.handle_error(400, e)
 
 
-@bp.route('/leaderboard')
+@bp.route('/hangman/leaderboard')
 class LeaderBoardList(BaseResource):
     @inject
     def __init__(self, logger: Logger, handler: HangmanHandler):
