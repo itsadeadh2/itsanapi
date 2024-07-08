@@ -29,8 +29,6 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          coverage run -m unittest discover -s src/tests -v
-          coverage report
 
       - name: Unit Tests
         run: |

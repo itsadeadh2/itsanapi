@@ -151,7 +151,7 @@ class TestGetGame(BaseHangmanTest):
 
     def test_return_404_on_error(self):
         res = self.app.get(
-            f"/api/games/hangman/{Faker().random_number()}",
+            f"/api/games/hangman/{Faker().random_int(min=500)}",
             headers={"Authorization": f"Bearer {self.access_token}"},
         )
         self.assertEqual(res.status_code, 404)
