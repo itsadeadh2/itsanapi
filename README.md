@@ -10,9 +10,8 @@
 
 ### TODO
 - [x] Get coverage up to 95%
-- [x] Add relational db for users
-- [x] Register users on db with oauth
-- [ ] Add local development configuration
-- [ ] Implement games endpoint
-- [ ] Implement hangman game
-- [ ] Change email storage to RDS
+- [x] Contact info functionality
+- [x] Registration, authentication and authorization
+- [x] Add local development configuration
+- [x] Implement hangman game
+- [x] Change email storage to RDS

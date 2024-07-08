@@ -3,6 +3,8 @@ name: Coverage above 95
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**/README.md'
 
 permissions:
   contents: read
