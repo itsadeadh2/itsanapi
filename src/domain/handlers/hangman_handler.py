@@ -16,10 +16,7 @@ class HangmanHandler:
 
     def take_guess(self, guess, game_id):
         game = self.get_game(game_id=game_id)
-        return self.hangman_service.take_guess(
-            guess=guess,
-            game=game
-        )
+        return self.hangman_service.take_guess(guess=guess, game=game)
 
     def get_all_games(self):
         user = self.user_service.get_user_from_token()

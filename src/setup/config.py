@@ -3,14 +3,16 @@ import os
 
 def add_configs(app):
     # Configs from env vars #
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'TOP SECRET KEY!')
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "TOP SECRET KEY!")
     app.config["QUEUE_URL"] = os.getenv("QUEUE_URL")
-    app.config['GOOGLE'] = {
-        'consumer_key': os.getenv('GOOGLE_CLIENT_ID'),
-        'consumer_secret': os.getenv('GOOGLE_CLIENT_SECRET'),
+    app.config["GOOGLE"] = {
+        "consumer_key": os.getenv("GOOGLE_CLIENT_ID"),
+        "consumer_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
     }
-    app.config["FRONTEND_CALLBACK_URL"] = os.getenv('FRONTEND_CALLBACK_URL')
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///data.db")
+    app.config["FRONTEND_CALLBACK_URL"] = os.getenv("FRONTEND_CALLBACK_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+        "DATABASE_URL", "sqlite:///data.db"
+    )
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -19,4 +21,6 @@ def add_configs(app):
     app.config["OPENAPI_VERSION"] = "3.0.3"
     app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
-    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    app.config["OPENAPI_SWAGGER_UI_URL"] = (
+        "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    )

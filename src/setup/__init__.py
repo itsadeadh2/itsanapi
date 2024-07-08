@@ -5,4 +5,11 @@ from .injector import AppModule
 from .jwt import add_jwt_config
 from .resources import add_resources
 
-__all__ = ['add_configs', 'add_cors', 'add_resources', 'AppModule', 'add_db', 'add_jwt_config']
+__all__ = [
+    "add_configs",
+    "add_cors",
+    "add_resources",
+    "AppModule",
+    "add_db",
+    "add_jwt_config",
+]

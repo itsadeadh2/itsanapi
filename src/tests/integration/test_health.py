@@ -4,5 +4,5 @@ from src.tests.integration.base_test import BaseTest
 class TestHealth(BaseTest):
 
     def test_health(self):
-        res = self.app.get('/api/health')
+        res = self.app.get("/api/health")
         self.assertEqual(res.status_code, 200)

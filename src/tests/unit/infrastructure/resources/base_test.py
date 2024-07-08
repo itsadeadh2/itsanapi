@@ -31,10 +31,10 @@ class BaseResourcesTest(TestCase):
                 return contact_mock
 
         self.mocks = {
-            'auth_mock': auth_mock,
-            'logger_mock': logger_mock,
-            'contact_mock': contact_mock,
-            'hangman_mock': hangman_mock
+            "auth_mock": auth_mock,
+            "logger_mock": logger_mock,
+            "contact_mock": contact_mock,
+            "hangman_mock": hangman_mock,
         }
 
         app = create_app()

@@ -8,7 +8,7 @@ from .base import BaseResource
 bp = Blueprint("health", "health", description="Healthcheck operations")
 
 
-@bp.route('/api/health')
+@bp.route("/api/health")
 class Health(BaseResource):
     @inject
     def __init__(self, logger: Logger):

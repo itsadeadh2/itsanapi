@@ -2,7 +2,7 @@ from src.database.db import db
 
 
 class HangmanScoresModel(db.Model):
-    __tablename__ = 'hangman_scores'
+    __tablename__ = "hangman_scores"
 
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, default=0, nullable=False)

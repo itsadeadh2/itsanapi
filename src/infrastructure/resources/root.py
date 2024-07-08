@@ -9,7 +9,7 @@ from .base import BaseResource
 bp = Blueprint("root", "root", description="Root route operations")
 
 
-@bp.route('/')
+@bp.route("/")
 class Root(BaseResource):
 
     @inject
@@ -17,4 +17,4 @@ class Root(BaseResource):
         super().__init__(logger)
 
     def get(self):
-        return redirect('https://itsadeadh2.github.io/commodore-landing/', code=302)
+        return redirect("https://itsadeadh2.github.io/commodore-landing/", code=302)

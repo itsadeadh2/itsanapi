@@ -5,7 +5,9 @@ from src.database.models import ExpiredTokensModel
 
 
 def add_jwt_config(app):
-    app.config["JWT_SECRET_KEY"] = "foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987"
+    app.config["JWT_SECRET_KEY"] = (
+        "foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987"
+    )
     jwt = JWTManager(app)
 
     @jwt.additional_claims_loader
@@ -18,16 +20,13 @@ def add_jwt_config(app):
     def expired_token_callback(jwt_header, jwt_payload):
         return (
             jsonify({"message": "the token has expired.", "error": "token_expired"}),
-            401
+            401,
         )
 
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
-        return (
-            jsonify(
-                {"message": "Signature verification failed", "error": "invalid_token"},
-                401
-            )
+        return jsonify(
+            {"message": "Signature verification failed", "error": "invalid_token"}, 401
         )
 
     @jwt.unauthorized_loader
@@ -36,10 +35,10 @@ def add_jwt_config(app):
             jsonify(
                 {
                     "description": "Request does not contain an access token",
-                    "error": "authorization_required"
+                    "error": "authorization_required",
                 }
             ),
-            401
+            401,
         )
 
     @jwt.token_in_blocklist_loader
@@ -51,12 +50,9 @@ def add_jwt_config(app):
     def revoked_token_callback(jwt_header, jwt_payload):
         return (
             jsonify(
-                {
-                    "description": "The token has been revoked.",
-                    "error": "token_revoked"
-                }
+                {"description": "The token has been revoked.", "error": "token_revoked"}
             ),
-            401
+            401,
         )
 
     @jwt.needs_fresh_token_loader
@@ -65,8 +61,8 @@ def add_jwt_config(app):
             jsonify(
                 {
                     "description": "The token is not fresh.",
-                    "error": "fresh_token_required"
+                    "error": "fresh_token_required",
                 }
             ),
-            401
+            401,
         )

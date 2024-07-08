@@ -5,7 +5,7 @@ from src.infrastructure.resources import (
     root_bp,
     contact_bp,
     user_bp,
-    hangman_bp
+    hangman_bp,
 )
 
 

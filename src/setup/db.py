@@ -6,7 +6,7 @@ from src.database.models import (
     HangmanGamesModel,
     HangmanScoresModel,
     ExpiredTokensModel,
-    ContactRequestsModel
+    ContactRequestsModel,
 )
 
 
@@ -15,4 +15,10 @@ def add_db(app):
     return Migrate(app, db)
 
 
-__all__ = ['UserModel', 'HangmanGamesModel', 'HangmanScoresModel', 'ExpiredTokensModel', 'ContactRequestsModel']
+__all__ = [
+    "UserModel",
+    "HangmanGamesModel",
+    "HangmanScoresModel",
+    "ExpiredTokensModel",
+    "ContactRequestsModel",
+]

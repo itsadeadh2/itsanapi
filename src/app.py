@@ -1,8 +1,16 @@
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from flask import Flask
-from src.setup import add_cors, add_configs, add_resources, AppModule, add_db, add_jwt_config
+from src.setup import (
+    add_cors,
+    add_configs,
+    add_resources,
+    AppModule,
+    add_db,
+    add_jwt_config,
+)
 from flask_injector import FlaskInjector
 
 
@@ -19,8 +27,9 @@ def create_app():
     return app
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from dotenv import load_dotenv
+
     load_dotenv()
     app = create_app()
-    app.run(host='localhost', port=5000)
+    app.run(host="localhost", port=5000)

@@ -29,7 +29,7 @@ class TestContactRequestService(unittest.TestCase):
 
 class TestCreateContactRequest(TestContactRequestService):
 
-    @patch('src.infrastructure.services.contact_request_service.ContactRequestsModel')
+    @patch("src.infrastructure.services.contact_request_service.ContactRequestsModel")
     def test_create_contact_request(self, contact_requests_model):
         email = self.faker.email()
 
@@ -43,7 +43,7 @@ class TestCreateContactRequest(TestContactRequestService):
 
 class TestGetAllContactRequests(TestContactRequestService):
 
-    @patch('src.infrastructure.services.contact_request_service.ContactRequestsModel')
+    @patch("src.infrastructure.services.contact_request_service.ContactRequestsModel")
     def test_get_all_contact_requests(self, contact_requests_model):
         res = self.service.get_all_contact_requests()
         contact_requests_model.query.all.assert_called_once()

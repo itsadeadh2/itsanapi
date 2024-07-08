@@ -3,7 +3,7 @@ from logging import StreamHandler
 
 
 def add_logger(app):
-    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     # Create a RotatingFileHandler to manage log file size
     handler = StreamHandler()

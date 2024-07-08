@@ -7,7 +7,10 @@ from injector import Module, provider, singleton
 from src.database.db import db
 from src.domain.handlers import ContactHandler, UserHandler, HangmanHandler
 from src.infrastructure.services import (
-    QueueService, ContactRequestService, UserService, HangmanService
+    QueueService_,
+    ContactRequestService,
+    UserService,
+    HangmanService,
 )
 
 
@@ -15,14 +18,14 @@ from src.infrastructure.services import (
 class AppModule(Module):
     @singleton
     @provider
-    def provide_queue_service(self) -> QueueService:
-        return QueueService(
-            queue_url=current_app.config.get('QUEUE_URL')
-        )
+    def provide_queue_service(self) -> QueueService_:
+        return QueueService_(queue_url=current_app.config.get("QUEUE_URL"))
 
     @singleton
     @provider
-    def provide_contact_request_service(self, database: SQLAlchemy) -> ContactRequestService:
+    def provide_contact_request_service(
+        self, database: SQLAlchemy
+    ) -> ContactRequestService:
         return ContactRequestService(db=database)
 
     @singleton
@@ -37,18 +40,28 @@ class AppModule(Module):
 
     @singleton
     @provider
-    def provide_contact_handler(self, contact_request_service: ContactRequestService, queue: QueueService) -> ContactHandler:
-        return ContactHandler(contact_request_service=contact_request_service, queue_service=queue)
+    def provide_contact_handler(
+        self, contact_request_service: ContactRequestService, queue: QueueService_
+    ) -> ContactHandler:
+        return ContactHandler(
+            contact_request_service=contact_request_service, queue_service=queue
+        )
 
     @singleton
     @provider
-    def provide_user_handler(self, user_service: UserService, hangman_service: HangmanService) -> UserHandler:
+    def provide_user_handler(
+        self, user_service: UserService, hangman_service: HangmanService
+    ) -> UserHandler:
         return UserHandler(user_service=user_service, hangman_service=hangman_service)
 
     @singleton
     @provider
-    def provide_hangman_handler(self, hangman_service: HangmanService, user_service: UserService) -> HangmanHandler:
-        return HangmanHandler(hangman_service=hangman_service, user_service=user_service)
+    def provide_hangman_handler(
+        self, hangman_service: HangmanService, user_service: UserService
+    ) -> HangmanHandler:
+        return HangmanHandler(
+            hangman_service=hangman_service, user_service=user_service
+        )
 
     @singleton
     @provider

@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from faker import Faker
 
@@ -13,21 +13,19 @@ class TestContactHandler(unittest.TestCase):
         self.user_service = Mock()
         self.hangman_service = Mock()
         self.handler = UserHandler(
-            user_service=self.user_service,
-            hangman_service=self.hangman_service
+            user_service=self.user_service, hangman_service=self.hangman_service
         )
         self.user_data = {
-            'name': self.faker.name(),
-            'email': self.faker.email(),
-            'password': self.faker.password()
+            "name": self.faker.name(),
+            "email": self.faker.email(),
+            "password": self.faker.password(),
         }
 
     def test_init_success(self):
         raised = False
         try:
             self.handler = UserHandler(
-                user_service=self.user_service,
-                hangman_service=self.hangman_service
+                user_service=self.user_service, hangman_service=self.hangman_service
             )
         except Exception:
             raised = True

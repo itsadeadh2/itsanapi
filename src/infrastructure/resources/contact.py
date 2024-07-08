@@ -10,7 +10,7 @@ from .base import BaseResource
 bp = Blueprint("contact", "contact", description="Request contact info")
 
 
-@bp.route('/api/contact')
+@bp.route("/api/contact")
 class Contact(BaseResource):
     @inject
     def __init__(self, logger: Logger, handler: ContactHandler = None):
@@ -28,7 +28,7 @@ class Contact(BaseResource):
     def get(self):
         try:
             emails = self.handler.handle_get()
-            data = {'emails': emails}
+            data = {"emails": emails}
             return data, 200
         except Exception as e:
             return self.handle_error(500, e)

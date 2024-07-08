@@ -9,7 +9,7 @@ from src.infrastructure.services.hangman_service import GameStatus
 
 
 class TestHangmanService(unittest.TestCase):
-    @patch('src.infrastructure.services.hangman_service.Faker')
+    @patch("src.infrastructure.services.hangman_service.Faker")
     def setUp(self, faker_mock):
         self.db = Mock()
         self.faker_mock = faker_mock
@@ -36,26 +36,26 @@ class TestUtilMethods(TestHangmanService):
         word = self.faker.word()
         word_mask = self.service.get_masked_text(word)
         self.assertEqual(len(word_mask), len(word))
-        self.assertEqual(True, '_' in word_mask)
+        self.assertEqual(True, "_" in word_mask)
 
     def test_check_valid_guess(self):
-        solution = 'foo'
-        guess = 'o'
+        solution = "foo"
+        guess = "o"
         result, masked_result = self.service.check_guess(guess=guess, solution=solution)
         self.assertEqual(result, True)
-        self.assertEqual(masked_result, '_oo')
+        self.assertEqual(masked_result, "_oo")
 
     def test_check_wrong_guess(self):
-        solution = 'foo'
-        guess = 'z'
+        solution = "foo"
+        guess = "z"
         result, masked_result = self.service.check_guess(guess=guess, solution=solution)
         self.assertEqual(result, False)
-        self.assertEqual(masked_result, '___')
+        self.assertEqual(masked_result, "___")
 
 
 class TestCreateGame(TestHangmanService):
 
-    @patch('src.infrastructure.services.hangman_service.HangmanGamesModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanGamesModel")
     def test_create_game(self, games_model_mock):
         self.service.get_masked_text = Mock()
         faker_instance = self.faker_mock.return_value
@@ -67,11 +67,11 @@ class TestCreateGame(TestHangmanService):
         created_game = self.service.create_game(user_id=user_id)
         self.assertEqual(created_game, game)
         expected_game_data = {
-            'solution': solution,
-            'attempts_left': 6,
-            'status': GameStatus.IN_PROGRESS.value,
-            'masked_word': masked_word,
-            'user_id': user_id
+            "solution": solution,
+            "attempts_left": 6,
+            "status": GameStatus.IN_PROGRESS.value,
+            "masked_word": masked_word,
+            "user_id": user_id,
         }
         games_model_mock.assert_called_once_with(**expected_game_data)
         self.db.session.add.assert_called_with(games_model_mock.return_value)
@@ -80,7 +80,7 @@ class TestCreateGame(TestHangmanService):
 
 class TestGetGame(TestHangmanService):
 
-    @patch('src.infrastructure.services.hangman_service.HangmanGamesModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanGamesModel")
     def test_get_game_return_game(self, games_model_mock):
         game_id = self.faker.random_number()
         user_id = self.faker.random_number()
@@ -91,19 +91,21 @@ class TestGetGame(TestHangmanService):
         game = self.service.get_game(game_id=game_id, user_id=user_id)
         self.assertEqual(game, game_from_db)
 
-    @patch('src.infrastructure.services.hangman_service.HangmanGamesModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanGamesModel")
     def test_raise_exception_if_game_is_not_found(self, games_model_mock):
         games_model_mock.query.get_or_404.return_value = {}
 
         with self.assertRaises(GameNotFound):
-            self.service.get_game('foo', 'baz')
+            self.service.get_game("foo", "baz")
 
-    @patch('src.infrastructure.services.hangman_service.HangmanGamesModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanGamesModel")
     def test_raise_exception_if_user_id_mismatch(self, games_model_mock):
-        games_model_mock.query.get_or_404.return_value.user_id = self.faker.random_number()
+        games_model_mock.query.get_or_404.return_value.user_id = (
+            self.faker.random_number()
+        )
 
         with self.assertRaises(GameNotFound):
-            self.service.get_game('foo', self.faker.random_number())
+            self.service.get_game("foo", self.faker.random_number())
 
 
 class TestFinishGame(TestHangmanService):
@@ -136,7 +138,7 @@ class TestSaveGame(TestHangmanService):
 
 class TestGetAllGames(TestHangmanService):
 
-    @patch('src.infrastructure.services.hangman_service.HangmanGamesModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanGamesModel")
     def test_get_all_games(self, games_model_mock):
         user_id = self.faker.random_number()
         result = self.service.get_all_games(user_id=user_id)
@@ -147,23 +149,29 @@ class TestHandleCorrectGuess(TestHangmanService):
 
     def test_finish_game_if_result_matches_solution(self):
         game = Mock()
-        game.solution = 'foo'
-        game.masked_word = 'f__'
-        masked_result = '_oo'
+        game.solution = "foo"
+        game.masked_word = "f__"
+        masked_result = "_oo"
         self.service.finish_game = Mock()
 
-        result = self.service.handle_correct_guess(game=game, masked_result=masked_result)
+        result = self.service.handle_correct_guess(
+            game=game, masked_result=masked_result
+        )
         self.assertEqual(result, self.service.finish_game.return_value)
-        self.service.finish_game.assert_called_once_with(game=game, status=GameStatus.WON)
+        self.service.finish_game.assert_called_once_with(
+            game=game, status=GameStatus.WON
+        )
 
     def test_save_game_if_result_matches_solution(self):
         game = Mock()
-        game.solution = 'foo'
-        game.masked_word = 'f__'
-        masked_result = '__o'
+        game.solution = "foo"
+        game.masked_word = "f__"
+        masked_result = "__o"
         self.service.save_game = Mock()
 
-        result = self.service.handle_correct_guess(game=game, masked_result=masked_result)
+        result = self.service.handle_correct_guess(
+            game=game, masked_result=masked_result
+        )
         self.assertEqual(result, self.service.save_game.return_value)
 
 
@@ -175,7 +183,9 @@ class TestHandleWrongGuess(TestHangmanService):
         self.service.finish_game = Mock()
         result = self.service.handle_wrong_guess(game=game)
         self.assertEqual(result, self.service.finish_game.return_value)
-        self.service.finish_game.assert_called_once_with(game=game, status=GameStatus.LOST)
+        self.service.finish_game.assert_called_once_with(
+            game=game, status=GameStatus.LOST
+        )
 
     def test_save_game_if_there_are_still_attempts_left(self):
         game = Mock()
@@ -193,20 +203,22 @@ class TestTakeGuess(TestHangmanService):
         game.status = GameStatus.IN_PROGRESS
         guess = self.faker.word()
         self.service.check_guess = Mock()
-        self.service.check_guess.return_value = True, 'foo'
+        self.service.check_guess.return_value = True, "foo"
 
         self.service.handle_correct_guess = Mock()
 
         result = self.service.take_guess(guess=guess, game=game)
         self.assertEqual(result, self.service.handle_correct_guess.return_value)
-        self.service.handle_correct_guess.assert_called_once_with(game=game, masked_result='foo')
+        self.service.handle_correct_guess.assert_called_once_with(
+            game=game, masked_result="foo"
+        )
 
     def test_wrong_guess(self):
         game = Mock()
         game.status = GameStatus.IN_PROGRESS
         guess = self.faker.word()
         self.service.check_guess = Mock()
-        self.service.check_guess.return_value = False, 'foo'
+        self.service.check_guess.return_value = False, "foo"
 
         self.service.handle_wrong_guess = Mock()
 
@@ -219,23 +231,23 @@ class TestTakeGuess(TestHangmanService):
         game.status = GameStatus.WON.value
 
         with self.assertRaises(GameOver):
-            self.service.take_guess('f', game=game)
+            self.service.take_guess("f", game=game)
 
         game.status = GameStatus.LOST.value
         with self.assertRaises(GameOver):
-            self.service.take_guess('f', game=game)
+            self.service.take_guess("f", game=game)
 
 
 class TestGetOrCreateScore(TestHangmanService):
 
-    @patch('src.infrastructure.services.hangman_service.HangmanScoresModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanScoresModel")
     def test_return_score_if_exists(self, score_model_mock):
         user_id = self.faker.random_number()
 
         res = self.service.get_or_create_score(user_id=user_id)
         self.assertEqual(res, score_model_mock.query.filter().first.return_value)
 
-    @patch('src.infrastructure.services.hangman_service.HangmanScoresModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanScoresModel")
     def test_create_score_if_doesnt_exists(self, score_model_mock):
         user_id = self.faker.random_number()
         score_model_mock.query.filter().first.return_value = None
@@ -249,14 +261,14 @@ class TestGetOrCreateScore(TestHangmanService):
 
 class TestGetLeaderboard(TestHangmanService):
 
-    @patch('src.infrastructure.services.hangman_service.HangmanScoresModel')
+    @patch("src.infrastructure.services.hangman_service.HangmanScoresModel")
     def test_return_results(self, score_model_mock):
         mock_score = Mock()
         mock_score.user.name = self.faker.name()
         mock_score.score = self.faker.random_number()
-        db_results = [
-            mock_score
-        ]
+        db_results = [mock_score]
         self.db.session.query().all.return_value = db_results
         res = self.service.get_leaderboard()
-        self.assertEqual(res, [{"name": mock_score.user.name, "score": mock_score.score}])
+        self.assertEqual(
+            res, [{"name": mock_score.user.name, "score": mock_score.score}]
+        )

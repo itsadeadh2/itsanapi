@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from faker import Faker
 
@@ -12,12 +12,16 @@ class TestHangmanHandler(unittest.TestCase):
         self.faker = Faker()
         self.hangman_service = Mock()
         self.user_service = Mock()
-        self.handler = HangmanHandler(hangman_service=self.hangman_service, user_service=self.user_service)
+        self.handler = HangmanHandler(
+            hangman_service=self.hangman_service, user_service=self.user_service
+        )
 
     def test_init_success(self):
         raised = False
         try:
-            HangmanHandler(hangman_service=self.hangman_service, user_service=self.user_service)
+            HangmanHandler(
+                hangman_service=self.hangman_service, user_service=self.user_service
+            )
         except Exception:
             raised = True
 
@@ -30,7 +34,9 @@ class TestHangmanHandler(unittest.TestCase):
     def test_create_game(self):
         res = self.handler.create_game()
         self.user_service.get_user_from_token.assert_called_once()
-        self.hangman_service.create_game.assert_called_once_with(user_id=self.user_service.get_user_from_token.return_value.id)
+        self.hangman_service.create_game.assert_called_once_with(
+            user_id=self.user_service.get_user_from_token.return_value.id
+        )
         self.assertEqual(res, self.hangman_service.create_game.return_value)
 
     def test_get_game(self):
@@ -41,7 +47,7 @@ class TestHangmanHandler(unittest.TestCase):
         self.user_service.get_user_from_token.assert_called_once()
         self.hangman_service.get_game.assert_called_once_with(
             game_id=game_id,
-            user_id=self.user_service.get_user_from_token.return_value.id
+            user_id=self.user_service.get_user_from_token.return_value.id,
         )
         self.assertEqual(res, self.hangman_service.get_game.return_value)
 
@@ -54,8 +60,7 @@ class TestHangmanHandler(unittest.TestCase):
 
         self.handler.get_game.assert_called_once_with(game_id=game_id)
         self.hangman_service.take_guess.assert_called_once_with(
-            guess=guess,
-            game=self.handler.get_game.return_value
+            guess=guess, game=self.handler.get_game.return_value
         )
         self.assertEqual(res, self.hangman_service.take_guess.return_value)
 

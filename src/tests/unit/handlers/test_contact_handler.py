@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from faker import Faker
 
@@ -13,8 +13,7 @@ class TestContactHandler(unittest.TestCase):
         self.cr_service = Mock()
         self.queue_service = Mock()
         self.handler = ContactHandler(
-            contact_request_service=self.cr_service,
-            queue_service=self.queue_service
+            contact_request_service=self.cr_service, queue_service=self.queue_service
         )
 
     def test_init_success(self):
@@ -22,7 +21,7 @@ class TestContactHandler(unittest.TestCase):
         try:
             self.handler = ContactHandler(
                 contact_request_service=self.cr_service,
-                queue_service=self.queue_service
+                queue_service=self.queue_service,
             )
         except Exception:
             raised = True
@@ -34,14 +33,14 @@ class TestContactHandler(unittest.TestCase):
             ContactHandler()
 
     def test_handle_post(self):
-        data = {
-            'email': self.faker.email()
-        }
+        data = {"email": self.faker.email()}
 
         res = self.handler.handle_post(data=data)
 
-        self.cr_service.create_contact_request.assert_called_once_with(email=data.get('email'))
-        self.queue_service.add_to_queue.assert_called_once_with(data.get('email'))
+        self.cr_service.create_contact_request.assert_called_once_with(
+            email=data.get("email")
+        )
+        self.queue_service.add_to_queue.assert_called_once_with(data.get("email"))
         self.assertEqual(True, type(res) is dict)
 
     def test_handle_get(self):

@@ -14,7 +14,7 @@ from .base import BaseResource
 bp = Blueprint("user", "user", description="User operations", url_prefix="/api/user")
 
 
-@bp.route('/register')
+@bp.route("/register")
 class Register(BaseResource):
 
     @inject
@@ -31,7 +31,7 @@ class Register(BaseResource):
             return self.handle_error(409, error)
 
 
-@bp.route('/login')
+@bp.route("/login")
 class Login(BaseResource):
 
     @inject
@@ -48,7 +48,7 @@ class Login(BaseResource):
             return self.handle_error(401, error)
 
 
-@bp.route('/logout')
+@bp.route("/logout")
 class Logout(BaseResource):
     @inject
     def __init__(self, logger: Logger, user_handler: UserHandler):
