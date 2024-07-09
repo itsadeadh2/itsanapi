@@ -15,10 +15,10 @@ class TestRegisterUser(BaseTest):
         self.assertEqual(res.status_code, status_code)
 
     def test_register_successfully(self):
-        self.assert_status_code(self.user_data, 200)
+        self.assert_status_code(self.user_data, 201)
 
     def test_user_already_exists(self):
-        self.assert_status_code(self.user_data, 200)
+        self.assert_status_code(self.user_data, 201)
         self.assert_status_code(self.user_data, 409)
 
     def test_user_data_invalid(self):

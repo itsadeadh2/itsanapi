@@ -69,6 +69,7 @@ class TestGetAllGames(BaseHangmanTest):
         self.assertEqual(res.status_code, 500)
 
     def test_require_auth(self):
+        self.app.delete_cookie('access_token_cookie')
         res = self.app.get(
             "/api/games/hangman",
         )
@@ -130,6 +131,7 @@ class TestGetGame(BaseHangmanTest):
         self.assertEqual(return_data_valid, True)
 
     def test_require_auth(self):
+        self.app.delete_cookie('access_token_cookie')
         res = self.app.get(
             f"/api/games/hangman/{self.game_id}",
         )

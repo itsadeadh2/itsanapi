@@ -6,7 +6,7 @@ from faker import Faker
 from src.domain.handlers import UserHandler
 
 
-class TestContactHandler(unittest.TestCase):
+class TestUserHandler(unittest.TestCase):
 
     def setUp(self):
         self.faker = Faker()
@@ -37,11 +37,16 @@ class TestContactHandler(unittest.TestCase):
             UserHandler()
 
     def test_create_user(self):
-        self.handler.create_user(user_data=self.user_data)
+        dummy_user = Mock()
+        dummy_user.id = self.faker.random_number()
+        dummy_token = Mock()
+        self.user_service.create_user.return_value = dummy_user, dummy_token
+        access_token = self.handler.create_user(user_data=self.user_data)
         self.user_service.create_user.assert_called_once_with(self.user_data)
         self.hangman_service.get_or_create_score.assert_called_once_with(
-            user_id=self.user_service.create_user.return_value.id
+            user_id=dummy_user.id
         )
+        self.assertEqual(access_token, dummy_token)
 
     def test_login_user(self):
         self.handler.log_in_user(user_data=self.user_data)

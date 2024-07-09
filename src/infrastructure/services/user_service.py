@@ -20,7 +20,8 @@ class UserService:
         )
         self.db.session.add(user)
         self.db.session.commit()
-        return user
+        access_token = self.log_in_user({"email": user.email, "password": user_data.get('password')})
+        return user, access_token
 
     def log_in_user(self, user_data):
         try:

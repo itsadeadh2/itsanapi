@@ -39,6 +39,7 @@ class TestCreateUser(TestHangmanService):
     @patch("src.infrastructure.services.user_service.UserModel")
     @patch("src.infrastructure.services.user_service.pbkdf2_sha256")
     def test_create_user(self, pbk_mock, user_model_mock):
+        self.service.log_in_user = Mock()
         user_data = {
             "email": self.faker.email(),
             "password": self.faker.password(),
@@ -46,7 +47,7 @@ class TestCreateUser(TestHangmanService):
         }
         user_model_mock.query.filter().first.return_value = None
 
-        created_user = self.service.create_user(user_data=user_data)
+        created_user, access_token = self.service.create_user(user_data=user_data)
 
         user_model_mock.assert_called_once_with(
             name=user_data["name"],
@@ -56,6 +57,7 @@ class TestCreateUser(TestHangmanService):
         self.db.session.add.assert_called_once_with(created_user)
         self.db.session.commit.assert_called_once()
         self.assertEqual(created_user, user_model_mock.return_value)
+        self.assertEqual(access_token, self.service.log_in_user.return_value)
 
 
 class TestLogInUser(TestHangmanService):
