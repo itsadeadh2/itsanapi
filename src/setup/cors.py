@@ -7,7 +7,7 @@ def add_cors(app):
     if is_production:
         CORS(app, supports_credentials=True, resources={
             r"/api/*": {
-                "origins": "https://itsadeadh2.github.io",
+                "origins": "https://commodore.itsadeadh2.com/",
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 "allow_headers": ["Content-Type", "X-CSRF-TOKEN"],
                 "expose_headers": ["X-CSRF-TOKEN"]
