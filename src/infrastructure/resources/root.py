@@ -17,4 +17,4 @@ class Root(BaseResource):
         super().__init__(logger)
 
     def get(self):
-        return redirect("https://itsadeadh2.github.io/commodore-landing/", code=302)
+        return redirect("https://commodore.itsadeadh2.com/", code=302)

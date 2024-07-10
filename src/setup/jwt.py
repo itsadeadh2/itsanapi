@@ -7,12 +7,18 @@ from src.database.models import ExpiredTokensModel
 
 def add_jwt_config(app):
     is_production = True if os.getenv("IS_PRODUCTION") else False
-    app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY', 'foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987')
+
+    app.config["JWT_SECRET_KEY"] = os.getenv('foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987')
     app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
-    app.config["JWT_COOKIE_DOMAIN"] = ".itsadeadh2.com"
-    app.config["JWT_COOKIE_SAMESITE"] = "None" if is_production else "Lax"
-    app.config["JWT_COOKIE_SECURE"] = is_production
+    app.config["JWT_COOKIE_SECURE"] = False
     app.config["JWT_ACCESS_COOKIE_PATH"] = '/'
+    if is_production:
+        app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY', 'foobarasidikas0901234-0apmasmca90==-=023)09)(*(&¨&560-0)¨*)((78987')
+        app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
+        app.config["JWT_COOKIE_DOMAIN"] = ".itsadeadh2.com"
+        app.config["JWT_COOKIE_SAMESITE"] = "None" if is_production else "Lax"
+        app.config["JWT_COOKIE_SECURE"] = is_production
+        app.config["JWT_ACCESS_COOKIE_PATH"] = '/'
     jwt = JWTManager(app)
 
     @jwt.additional_claims_loader
