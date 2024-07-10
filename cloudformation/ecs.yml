@@ -59,7 +59,7 @@ Resources:
               - !Sub ":${Revision}"
           Essential: true
           Environment:
-            - Name: IS_PROD
+            - Name: IS_PRODUCTION
               Value: 'True'
             - Name: JWT_SECRET_KEY
               Value: !Sub "${JwtSecret}"
