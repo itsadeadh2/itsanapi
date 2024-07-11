@@ -143,7 +143,7 @@ Resources:
             Command: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
             Interval: 10
             Retries: 5
-            StartPeriod: 120
+            StartPeriod: 200
           LogConfiguration:
             LogDriver: awslogs
             Options:
