@@ -82,14 +82,6 @@ jobs:
           template: cloudformation/ecr.yml
           no-fail-on-empty-changeset: 1
 
-      - name: Deploy RDS
-        uses: aws-actions/aws-cloudformation-github-deploy@v1
-        with:
-          name: ${{ env.service_name }}-db
-          template: cloudformation/rds.yml
-          parameter-overrides: "DbUserName=${{ secrets.DB_USERNAME }},DbPassword=${{ secrets.DB_PASSWORD }}"
-          no-fail-on-empty-changeset: 1
-
   push-image:
     name: Push image to ECR
     runs-on: ubuntu-latest
