@@ -140,10 +140,9 @@ Resources:
             - Name: POSTGRES_PASSWORD
               Value: !Sub "${DbPassword}"
           HealthCheck:
-            Command: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
-            Interval: 10
-            Retries: 5
-            StartPeriod: 200
+            Command: ["CMD-SHELL", "ping postgres.itsanapi-ecs.local"]
+            Interval: 15
+            Retries: 10
           LogConfiguration:
             LogDriver: awslogs
             Options:
