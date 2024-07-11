@@ -110,7 +110,9 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: /ecs/postgres
+              mode: non-blocking
+              max-buffer-size: 25m
+              awslogs-group: !Ref TaskLogGroup
               awslogs-region: !Ref "AWS::Region"
               awslogs-stream-prefix: ecs
 
