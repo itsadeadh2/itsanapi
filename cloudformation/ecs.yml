@@ -43,7 +43,7 @@ Resources:
   CloudMapNamespace:
     Type: AWS::ServiceDiscovery::PrivateDnsNamespace
     Properties:
-      Name: "${AWS::StackName}.local"
+      Name: !Sub "${AWS::StackName}.local"
       Vpc: !ImportValue vpc-id-export
 
   TaskDefinition:
