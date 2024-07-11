@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "AWS CloudFormation Template to deploy a fargate service"
+Description: "AWS CloudFormation Template to deploy a Fargate service"
 
 Parameters:
   Revision:
@@ -45,6 +45,42 @@ Resources:
     Properties:
       Name: !Sub "${AWS::StackName}.local"
       Vpc: !ImportValue vpc-id-export
+
+  # Define the EFS File System
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      Encrypted: true
+      PerformanceMode: generalPurpose
+      FileSystemPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowECSAccess
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action:
+              - "elasticfilesystem:ClientMount"
+              - "elasticfilesystem:ClientWrite"
+              - "elasticfilesystem:ClientRootAccess"
+            Resource: "*"
+
+  # EFS Mount Targets
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !ImportValue public-subnet-1-export
+      SecurityGroups:
+        - !Ref SecurityGroup
+
+  EFSMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !ImportValue public-subnet-2-export
+      SecurityGroups:
+        - !Ref SecurityGroup
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -122,6 +158,14 @@ Resources:
               awslogs-group: !Ref TaskLogGroup
               awslogs-region: !Ref "AWS::Region"
               awslogs-stream-prefix: ecs
+          MountPoints:
+            - SourceVolume: postgres-efs
+              ContainerPath: /var/lib/postgresql/data
+
+      Volumes:
+        - Name: postgres-efs
+          EFSVolumeConfiguration:
+            FilesystemId: !Ref EFSFileSystem
 
   ECSService:
     Type: AWS::ECS::Service
@@ -228,19 +272,6 @@ Resources:
                 Action:
                   - lambda:InvokeFunction
                   - lambda:GetFunction
-                Resource: "*"
-              - Effect: 'Allow'
-                Action:
-                  - 'dynamodb:CreateTable'
-                  - 'dynamodb:DeleteTable'
-                  - 'dynamodb:DescribeTable'
-                  - 'dynamodb:UpdateTable'
-                  - 'dynamodb:PutItem'
-                  - 'dynamodb:GetItem'
-                  - 'dynamodb:Query'
-                  - 'dynamodb:Scan'
-                  - 'dynamodb:UpdateItem'
-                  - 'dynamodb:DeleteItem'
                 Resource: "*"
               - Effect: 'Allow'
                 Action:
