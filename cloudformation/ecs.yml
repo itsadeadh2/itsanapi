@@ -166,6 +166,7 @@ Resources:
         - Name: postgres-efs
           EFSVolumeConfiguration:
             FilesystemId: !Ref EFSFileSystem
+            TransitEncryption: ENABLED
 
   ECSService:
     Type: AWS::ECS::Service
