@@ -49,21 +49,10 @@ Resources:
   # Define the EFS File System
   EFSFileSystem:
     Type: AWS::EFS::FileSystem
+    DeletionPolicy: Retain
     Properties:
-      Encrypted: true
       PerformanceMode: generalPurpose
-      FileSystemPolicy:
-        Version: "2012-10-17"
-        Statement:
-          - Sid: AllowECSAccess
-            Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action:
-              - "elasticfilesystem:ClientMount"
-              - "elasticfilesystem:ClientWrite"
-              - "elasticfilesystem:ClientRootAccess"
-            Resource: "*"
+      Encrypted: true
 
   # EFS Mount Targets
   EFSMountTarget1:
@@ -297,15 +286,6 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-      Policies:
-        - PolicyName: "AmazonECSTaskExecutionRolePolicy"
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - efs:*
-                Resource: "*"
 
   TaskLogGroup:
     Type: AWS::Logs::LogGroup
