@@ -278,6 +278,10 @@ Resources:
                 Action:
                   - 'sqs:SendMessage'
                 Resource: '*'
+              - Effect: 'Allow'
+                Action:
+                  - efs:*
+                Resource: '*'
 
   ECSTaskRole:
     Type: AWS::IAM::Role
