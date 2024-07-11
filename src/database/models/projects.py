@@ -12,31 +12,31 @@ class ProjectsModel(db.Model):
     )
     name = db.Column(
         db.String(120),
-        unique=True,
-        nullable=True,
+        nullable=False,
+        unique=False
     )
     description = db.Column(
         db.String(255),
-        unique=True,
-        nullable=True,
+        nullable=False,
+        unique=False
     )
     language = db.Column(
         db.String(120),
-        unique=True,
-        nullable=True,
+        nullable=False,
+        unique=False
     )
     stack = db.Column(
-        db.String(120),
-        unique=True,
-        nullable=True,
+        db.String(255),
+        nullable=False,
+        unique=False
     )
     github_link = db.Column(
         db.String(120),
-        unique=True,
-        nullable=True,
+        nullable=False,
+        unique=False
     )
     docs_link = db.Column(
         db.String(120),
-        unique=True,
         nullable=True,
+        unique=False
     )

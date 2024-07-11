@@ -53,6 +53,7 @@ class TestCreateUser(TestHangmanService):
             name=user_data["name"],
             email=user_data["email"],
             password=pbk_mock.hash.return_value,
+            is_admin=False
         )
         self.db.session.add.assert_called_once_with(created_user)
         self.db.session.commit.assert_called_once()

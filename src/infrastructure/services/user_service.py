@@ -17,10 +17,13 @@ class UserService:
             name=user_data["name"],
             email=user_data["email"],
             password=pbkdf2_sha256.hash(user_data["password"]),
+            is_admin=False
         )
         self.db.session.add(user)
         self.db.session.commit()
-        access_token = self.log_in_user({"email": user.email, "password": user_data.get('password')})
+        access_token = self.log_in_user(
+            {"email": user.email, "password": user_data.get("password")}
+        )
         return user, access_token
 
     def log_in_user(self, user_data):

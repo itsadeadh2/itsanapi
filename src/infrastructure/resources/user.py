@@ -1,10 +1,7 @@
 from logging import Logger
 from flask import make_response, jsonify
 
-from flask_jwt_extended import (
-    jwt_required,
-    set_access_cookies
-)
+from flask_jwt_extended import jwt_required, set_access_cookies
 from flask_smorest import Blueprint
 from injector import inject
 
@@ -28,7 +25,10 @@ class Register(BaseResource):
     def post(self, user_data):
         try:
             access_token = self.handler.create_user(user_data=user_data)
-            response = make_response(jsonify(message="User created successfully", access_token=access_token), 201)
+            response = make_response(
+                jsonify(message="User created successfully", access_token=access_token),
+                201,
+            )
             set_access_cookies(response, access_token)
             return response
         except UserAlreadyExists as error:

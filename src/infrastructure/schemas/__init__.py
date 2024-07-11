@@ -44,3 +44,13 @@ class HangmanGuesSchema(Schema):
 class HangmanScoreSchema(Schema):
     name = fields.Str(required=True)
     score = fields.Int(required=True)
+
+
+class ProjectSchema(Schema):
+    id = fields.Int(required=False)
+    name = fields.Str(required=True)
+    description = fields.Str(required=True)
+    language = fields.Str(required=True)
+    stack = fields.Str(required=True)
+    github_link = fields.Url(required=True, relative=False)
+    docs_link = fields.Url(required=False, relative=False)

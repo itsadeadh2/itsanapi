@@ -22,7 +22,7 @@ class BaseTest(TestCase):
     TEST_DATABASE_URI = "sqlite:///test.db"
 
     def setUp(
-        self,
+            self,
     ):
         os.environ["DATABASE_URL"] = self.TEST_DATABASE_URI
         app = create_app()
@@ -34,15 +34,15 @@ class BaseTest(TestCase):
             db.create_all()
 
     def tearDown(
-        self,
+            self,
     ):
         with self.app_context:
             # Drop all tables
             db.drop_all()
 
     def create_user(
-        self,
-        is_admin=False,
+            self,
+            is_admin=False,
     ):
         user_data = {
             "name": Faker().name(),
