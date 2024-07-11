@@ -39,6 +39,13 @@ Parameters:
     Description: 'App jwt secret'
 
 Resources:
+
+  CloudMapNamespace:
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+    Properties:
+      Name: "${AWS::StackName}.local"
+      Vpc: !ImportValue vpc-id-export
+
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -80,7 +87,7 @@ Resources:
                 - - "postgresql://"
                   - !Sub "${DbUserName}:${DbPassword}"
                   - "@"
-                  - "postgres"
+                  - !Sub "postgres.${AWS::StackName}.local"
                   - "/"
                   - postgres
           PortMappings:
@@ -141,6 +148,20 @@ Resources:
         - ContainerName: !Sub "${AWS::StackName}-${Revision}"
           ContainerPort: 80
           TargetGroupArn: !ImportValue itsanapi-elb-targetgroup-export
+      ServiceRegistries:
+        - RegistryArn: !GetAtt ServiceDiscoveryService.Arn
+
+  ServiceDiscoveryService:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      NamespaceId: !Ref CloudMapNamespace
+      Name: postgres
+      DnsConfig:
+        DnsRecords:
+          - Type: A
+            TTL: 60
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
