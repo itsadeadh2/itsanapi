@@ -4,5 +4,7 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY . .
+RUN apk update && \
+    apk add --no-cache iputils
 ENV PYTHONPATH /app
 CMD ["/bin/sh", "docker-entrypoint.sh"]

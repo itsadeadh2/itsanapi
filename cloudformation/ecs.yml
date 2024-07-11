@@ -127,7 +127,7 @@ Resources:
               awslogs-stream-prefix: ecs
           DependsOn:
             - ContainerName: postgres
-              Condition: HEALTHY
+              Condition: START
 
         - Name: postgres
           Image: postgres:latest
@@ -139,10 +139,6 @@ Resources:
               Value: !Sub "${DbUserName}"
             - Name: POSTGRES_PASSWORD
               Value: !Sub "${DbPassword}"
-          HealthCheck:
-            Command: ["CMD-SHELL", "ping postgres.itsanapi-ecs.local"]
-            Interval: 15
-            Retries: 10
           LogConfiguration:
             LogDriver: awslogs
             Options:
