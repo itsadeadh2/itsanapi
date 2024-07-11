@@ -141,10 +141,10 @@ Resources:
               Value: !Sub "${DbPassword}"
           HealthCheck:
             Command:
-              - pg_isready -d $${POSTGRES_DB} -U postgres
+              - pg_isready -d postgres -U postgres
             Interval: 10
-            Retries: 10
-            StartPeriod: 60
+            Retries: 5
+            StartPeriod: 2
           LogConfiguration:
             LogDriver: awslogs
             Options:
