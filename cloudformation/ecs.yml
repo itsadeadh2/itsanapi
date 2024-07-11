@@ -192,9 +192,6 @@ Resources:
         - ContainerName: !Sub "${AWS::StackName}-${Revision}"
           ContainerPort: 80
           TargetGroupArn: !ImportValue itsanapi-elb-targetgroup-export
-        - ContainerName: postgres
-          ContainerPort: 5432
-          TargetGroupArn: !ImportValue itsanapi-elb-postgres-targetgroup-export
       ServiceRegistries:
         - RegistryArn: !GetAtt ServiceDiscoveryService.Arn
 

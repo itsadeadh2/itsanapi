@@ -39,10 +39,6 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: "0.0.0.0/0"
-        - IpProtocol: tcp
-          FromPort: 5432
-          ToPort: 5432
-          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: "0.0.0.0/0"
@@ -59,20 +55,6 @@ Resources:
       HealthCheckIntervalSeconds: 30  # Health check interval
       HealthCheckProtocol: HTTP
       HealthCheckPath: /api/health  # Health check endpoint
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
-
-  PostgresTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Name: !Sub "${AWS::StackName}-postgres"
-      Port: 5432
-      Protocol: TCP
-      VpcId: !ImportValue vpc-id-export  # Adjust to your VPC
-      TargetType: ip  # Use IP targeting for Fargate
-      HealthCheckProtocol: TCP
-      HealthCheckIntervalSeconds: 30  # Health check interval
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
@@ -115,16 +97,6 @@ Resources:
             Port: "443"
             StatusCode: HTTP_301
 
-  ALBListenerPostgres:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 5432
-      Protocol: TCP
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref PostgresTargetGroup
-
   # Create an Alias Record pointing to the ALB
   DNSAliasRecord:
     Type: AWS::Route53::RecordSet
@@ -141,8 +113,3 @@ Outputs:
     Value: !Ref ECSTargetGroup
     Export:
       Name: !Sub "${AWS::StackName}-targetgroup-export"
-
-  postgrestargetgroup:
-    Value: !Ref ECSTargetGroup
-    Export:
-      Name: !Sub "${AWS::StackName}-postgres-targetgroup-export"
