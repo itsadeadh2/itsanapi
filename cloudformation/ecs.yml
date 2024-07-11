@@ -127,7 +127,7 @@ Resources:
               awslogs-stream-prefix: ecs
           DependsOn:
             - ContainerName: postgres
-              Condition: START
+              Condition: HEALTHY
 
         - Name: postgres
           Image: postgres:latest
@@ -139,6 +139,11 @@ Resources:
               Value: !Sub "${DbUserName}"
             - Name: POSTGRES_PASSWORD
               Value: !Sub "${DbPassword}"
+          HealthCheck:
+            Command: pg_isready -d $${POSTGRES_DB} -U postgres
+            Interval: 10s
+            Retries: 10
+            StartPeriod: 60
           LogConfiguration:
             LogDriver: awslogs
             Options:
