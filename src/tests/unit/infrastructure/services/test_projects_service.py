@@ -68,4 +68,3 @@ class TestGetProjects(TestProjectsService):
 
         projects_model_mock.query.filter.assert_called_once()
         self.assertEqual(res, projects_model_mock.query.filter.return_value)
-

@@ -43,7 +43,7 @@ class TestProjectsHandler(unittest.TestCase):
         self.assertEqual(res, self.projects_service.create_projects_in_bulk.return_value)
 
     def test_get_projects(self):
-        language=Mock()
+        language = Mock()
         res = self.handler.get_projects(language=language)
         self.projects_service.get_projects.assert_called_once_with(language=language)
         self.assertEqual(res, self.projects_service.get_projects.return_value)

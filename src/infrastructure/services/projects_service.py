@@ -26,4 +26,4 @@ class ProjectsService:
     def get_projects(self, language=None):
         if not language:
             return ProjectsModel.query.all()
-        return ProjectsModel.query.filter(ProjectsModel.language == language)
+        return ProjectsModel.query.filter(ProjectsModel.language.ilike(f"%{language}%"))
