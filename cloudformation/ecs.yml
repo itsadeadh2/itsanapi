@@ -140,8 +140,7 @@ Resources:
             - Name: POSTGRES_PASSWORD
               Value: !Sub "${DbPassword}"
           HealthCheck:
-            Command:
-              - pg_isready -d postgres -U postgres
+            Command: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
             Interval: 10
             Retries: 5
             StartPeriod: 2
