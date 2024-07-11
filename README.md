@@ -16,3 +16,4 @@
 - [x] Implement hangman game
 - [x] Change email storage to RDS
 - [ ] Implement projects endpoint
+- [ ] OAuth again?
