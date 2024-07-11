@@ -80,7 +80,7 @@ Resources:
                 - - "postgresql://"
                   - !Sub "${DbUserName}:${DbPassword}"
                   - "@"
-                  - !ImportValue "itsanapi-db-endpoint-export"
+                  - "postgres"
                   - "/"
                   - postgres
           PortMappings:
@@ -91,6 +91,26 @@ Resources:
               mode: non-blocking
               max-buffer-size: 25m
               awslogs-group: !Ref TaskLogGroup
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: ecs
+          DependsOn:
+            - ContainerName: postgres
+              Condition: START
+
+        - Name: postgres
+          Image: postgres:latest
+          Essential: true
+          PortMappings:
+            - ContainerPort: 5432
+          Environment:
+            - Name: POSTGRES_USER
+              Value: !Sub "${DbUserName}"
+            - Name: POSTGRES_PASSWORD
+              Value: !Sub "${DbPassword}"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: /ecs/postgres
               awslogs-region: !Ref "AWS::Region"
               awslogs-stream-prefix: ecs
 
@@ -130,6 +150,10 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: "0.0.0.0/0"
