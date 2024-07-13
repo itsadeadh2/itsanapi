@@ -5,7 +5,7 @@ Parameters:
   TargetDomain:
     Type: String
     Description: 'Target domain for the ALB'
-    Default: "itsadeadh2.com"
+    Default: "api.itsadeadh2.com"
     
 Resources:
   # Existing resources
