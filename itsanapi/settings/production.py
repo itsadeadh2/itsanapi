@@ -29,8 +29,13 @@ try:
 except requests.exceptions.RequestException:
     pass
 
+print(f'EC2_PRIVATE_IP: {EC2_PRIVATE_IP}')
+
+
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+
+print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
 DATABASE_URL = env('DATABASE_URL')
 if DATABASE_URL:
