@@ -5,7 +5,8 @@ import dj_database_url
 env = environ.Env(
     # Set casting, default value
     DEBUG=(bool, False),
-    QUEUE_URL=(str, '')
+    QUEUE_URL=(str, ''),
+    DATABASE_URL=(str, 'sqlite:///db.sqlite3')
 )
 
 environ.Env.read_env(env_file=BASE_DIR / ".env")
