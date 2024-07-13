@@ -36,15 +36,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          coverage run -m unittest discover -s src/tests/unit -v
-          coverage report
-
-      - name: Integration Tests
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          coverage run -m unittest discover -s src/tests/integration -v
-          coverage report
+          python manage.py test api
 
       - name: Run lint
         run: |

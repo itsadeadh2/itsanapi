@@ -24,11 +24,9 @@ healthcheck() {
 HEALTHCHECK_HOST="postgres.itsanapi-ecs.local"
 
 if healthcheck $HEALTHCHECK_HOST; then
-  flask db upgrade
+  python manage.py migrate
 
-  cd src
-
-  exec gunicorn --bind 0.0.0.0:80 "app:create_app()" \
+  exec gunicorn --bind 0.0.0.0:80 "itsanapi:wsgi:application" \
     --access-logfile - \
     --error-logfile - \
     --log-level $LOG_LEVEL

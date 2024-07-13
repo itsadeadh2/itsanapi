@@ -1,0 +1,38 @@
+[
+  {
+    "model": "api.score",
+    "pk": 1,
+    "fields": {
+      "score": 99,
+      "player": 1,
+      "game": 1
+    }
+  },
+  {
+    "model": "api.score",
+    "pk": 2,
+    "fields": {
+      "score": 45,
+      "player": 2,
+      "game": 1
+    }
+  },
+  {
+    "model": "api.score",
+    "pk": 3,
+    "fields": {
+      "score": 0,
+      "player": 3,
+      "game": 1
+    }
+  },
+  {
+    "model": "api.score",
+    "pk": 4,
+    "fields": {
+      "score": 20,
+      "player": 1,
+      "game": 2
+    }
+  }
+]

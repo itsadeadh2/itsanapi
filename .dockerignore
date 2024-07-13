@@ -1,0 +1,5 @@
+.github/
+cloudformation/
+venv/
+venv2/
+db.sqlite3

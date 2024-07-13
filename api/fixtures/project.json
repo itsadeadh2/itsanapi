@@ -1,0 +1,123 @@
+[
+
+  {
+    "model": "api.project",
+    "pk": 1,
+    "fields": {
+      "name": "Batocera FileBrowser",
+      "description": "Add FileBrowser to Batocera",
+      "language": "bash",
+      "stack": "bash",
+      "github_link": "https://github.com/itsadeadh2/batocera-filebrowser",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 2,
+    "fields": {
+      "name": "Commodore",
+      "description": "This project (frontend)",
+      "language": "node",
+      "stack": "TypeScript, React",
+      "github_link": "https://github.com/itsadeadh2/commodore-landing",
+      "docs_link": "https://itsadeadh2.github.io/commodore-docs/"
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 3,
+    "fields": {
+      "name": "itsanapi",
+      "description": "REST API made with flask, also used in this project",
+      "language": "python",
+      "stack": "Flask, AWS, PostGres",
+      "github_link": "https://github.com/itsadeadh2/itsanapi",
+      "docs_link": "https://itsadeadh2.github.io/commodore-docs/category/rest-api"
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 4,
+    "fields": {
+      "name": "Email Sender",
+      "description": "Worker that sends emails using mailgun",
+      "language": "python",
+      "stack": "Flask, AWS, S3, MailGun",
+      "github_link": "https://github.com/itsadeadh2/email-sender-worker",
+      "docs_link": "https://itsadeadh2.github.io/commodore-docs/category/workers"
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 5,
+    "fields": {
+      "name": "API Gateway",
+      "description": "Simple api gateway made with node/express",
+      "language": "node",
+      "stack": "Express, JavaScript, AWS",
+      "github_link": "https://github.com/itsadeadh2/api-gateway",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 6,
+    "fields": {
+      "name": "Astaroth2",
+      "description": "Youtube reports generator",
+      "language": "python",
+      "stack": "python",
+      "github_link": "https://github.com/itsadeadh2/astaroth2",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 7,
+    "fields": {
+      "name": "PAT CLI",
+      "description": "Add docstrings to python using Chat GPT",
+      "language": "python",
+      "stack": "python",
+      "github_link": "https://github.com/itsadeadh2/pat",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 8,
+    "fields": {
+      "name": "Luna CLI",
+      "description": "Synchronize files using S3",
+      "language": "python",
+      "stack": "python",
+      "github_link": "https://github.com/itsadeadh2/luna-cli",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 9,
+    "fields": {
+      "name": "Syncthing Setups",
+      "description": "Collection of syncthing convenience scripts for handheld devices",
+      "language": "bash",
+      "stack": "bash",
+      "github_link": "https://github.com/itsadeadh2/syncthing-setups",
+      "docs_link": ""
+    }
+  },
+  {
+    "model": "api.project",
+    "pk": 10,
+    "fields": {
+      "name": "Batocera FileBrowser",
+      "description": "Add FileBrowser to Batocera",
+      "language": "bash",
+      "stack": "bash",
+      "github_link": "https://github.com/itsadeadh2/batocera-filebrowser",
+      "docs_link": ""
+    }
+  }
+]
