@@ -26,7 +26,7 @@ HEALTHCHECK_HOST="postgres.itsanapi-ecs.local"
 if healthcheck $HEALTHCHECK_HOST; then
   python manage.py migrate
 
-  exec gunicorn --bind 0.0.0.0:80 "itsanapi:wsgi:application" \
+  exec gunicorn --bind 0.0.0.0:80 "itsanapi.wsgi:application" \
     --access-logfile - \
     --error-logfile - \
     --log-level $LOG_LEVEL
