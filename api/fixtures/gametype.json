@@ -1,0 +1,18 @@
+[
+  {
+    "model": "api.gametype",
+    "pk": 1,
+    "fields": {
+      "name": "hangman",
+      "slug": "hangman"
+    }
+  },
+  {
+    "model": "api.gametype",
+    "pk": 2,
+    "fields": {
+      "name": "testgame",
+      "slug": "test-game"
+    }
+  }
+]

@@ -17,3 +17,4 @@
 - [x] Change email storage to RDS
 - [ ] Implement projects endpoint
 - [ ] OAuth again?
+- [ ] Send sqs

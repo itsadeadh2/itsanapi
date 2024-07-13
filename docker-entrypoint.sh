@@ -28,7 +28,7 @@ if healthcheck $HEALTHCHECK_HOST; then
 
   cd src
 
-  exec gunicorn --bind 0.0.0.0:80 "app:create_app()" \
+  exec gunicorn --bind 0.0.0.0:80 "itsanapi:wsgi:application" \
     --access-logfile - \
     --error-logfile - \
     --log-level $LOG_LEVEL
