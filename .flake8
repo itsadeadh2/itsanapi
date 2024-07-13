@@ -11,4 +11,5 @@ exclude =
     venv
     venv2
     migrations
+    itsanapi/settings/
 max-complexity = 10
