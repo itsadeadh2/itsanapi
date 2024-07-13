@@ -1,6 +1,6 @@
 from .base import *
 import dj_database_url
-
+import requests
 
 env = environ.Env(
     # Set casting, default value
@@ -22,6 +22,15 @@ SIMPLE_JWT = {
 }
 
 ALLOWED_HOSTS = ['itsadeadh2.com']
+
+EC2_PRIVATE_IP = None
+try:
+    EC2_PRIVATE_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
+except requests.exceptions.RequestException:
+    pass
+
+if EC2_PRIVATE_IP:
+    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 DATABASE_URL = env('DATABASE_URL')
 if DATABASE_URL:
