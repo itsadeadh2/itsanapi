@@ -32,11 +32,11 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Unit Tests
+      - name: Tests
         run: |
           python -m venv venv
           source venv/bin/activate
-          python manage.py test api
+          coverage run manage.py test api
 
       - name: Run lint
         run: |
