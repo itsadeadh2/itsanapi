@@ -14,7 +14,7 @@ from api.serializers import (
     HangmanGameSerializer,
     GuessSerializer,
     ProjectSerializer,
-    ScoreSerializer
+    ScoreSerializer,
 )
 
 
@@ -31,14 +31,14 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class GameViewSet(viewsets.ModelViewSet):
     queryset = GameType.objects.all()
     serializer_class = GameSerializer
-    lookup_field = 'slug'
+    lookup_field = "slug"
 
     def perform_create(self, serializer):
-        serializer.save(slug=slugify(serializer.validated_data['name']))
+        serializer.save(slug=slugify(serializer.validated_data["name"]))
 
     def perform_update(self, serializer):
-        if 'name' in serializer.validated_data:
-            serializer.save(slug=slugify(serializer.validated_data['name']))
+        if "name" in serializer.validated_data:
+            serializer.save(slug=slugify(serializer.validated_data["name"]))
         else:
             serializer.save()
 
@@ -50,14 +50,14 @@ class HangmanViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
-            game_type = GameType.objects.get(name='hangman')
+            game_type = GameType.objects.get(name="hangman")
             solution = Faker().word()
             game_data = {
-                'solution': solution,
-                'status': HangmanGame.Status.IN_PROGRESS,
-                'masked_word': HangmanGame.get_masked_text(solution),
-                'game': game_type,
-                'player': self.request.user
+                "solution": solution,
+                "status": HangmanGame.Status.IN_PROGRESS,
+                "masked_word": HangmanGame.get_masked_text(solution),
+                "game": game_type,
+                "player": self.request.user,
             }
             hangman = HangmanGame(**game_data)
             hangman.save()
@@ -67,12 +67,12 @@ class HangmanViewSet(viewsets.ModelViewSet):
             error_data = {"message": "No entry for hangman as gametype."}
             return Response(error_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @action(detail=True, methods=['POST'], url_path='guess')
+    @action(detail=True, methods=["POST"], url_path="guess")
     def guess(self, request, pk=None):
         guess = GuessSerializer(data=request.data)
         if not guess.is_valid():
             return Response(guess.errors)
-        guess_letter = guess.validated_data.get('guess')
+        guess_letter = guess.validated_data.get("guess")
 
         game = self.get_object()
         if game.player.id != request.user.id:
@@ -84,12 +84,17 @@ class HangmanViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         if guess_letter in game.masked_word:
-            return Response({"message": "you already guessed this letter."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "you already guessed this letter."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         game.handle_guess(letter=guess_letter)
         game.save()
         if game.status == HangmanGame.Status.WON:
-            score, created = Score.objects.get_or_create(game=game.game, player=game.player)
+            score, created = Score.objects.get_or_create(
+                game=game.game, player=game.player
+            )
             score.score += 9 * game.attempts_left
             score.save()
         serializer = self.get_serializer(game)
@@ -100,7 +105,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-    @action(detail=False, methods=['POST'], url_path='bulk')
+    @action(detail=False, methods=["POST"], url_path="bulk")
     def bulk(self, request):
         projects = []
         for entry in request.data:
@@ -117,4 +122,4 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
-    lookup_field = 'game__slug'
+    lookup_field = "game__slug"

@@ -15,55 +15,131 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ContactRequest',
+            name="ContactRequest",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254)),
-                ('created', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                ("created", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Game',
+            name="Game",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=250)),
-                ('slug', models.SlugField(max_length=250)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=250)),
+                ("slug", models.SlugField(max_length=250)),
             ],
         ),
         migrations.CreateModel(
-            name='Project',
+            name="Project",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=250)),
-                ('description', models.CharField(max_length=250)),
-                ('language', models.CharField(max_length=250)),
-                ('stack', models.CharField(max_length=250)),
-                ('github_link', models.CharField(max_length=250)),
-                ('docs_link', models.CharField(blank=True, max_length=250)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=250)),
+                ("description", models.CharField(max_length=250)),
+                ("language", models.CharField(max_length=250)),
+                ("stack", models.CharField(max_length=250)),
+                ("github_link", models.CharField(max_length=250)),
+                ("docs_link", models.CharField(blank=True, max_length=250)),
             ],
         ),
         migrations.CreateModel(
-            name='HangmanGame',
+            name="HangmanGame",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('solution', models.CharField(max_length=250)),
-                ('attempts_left', models.IntegerField(default=6)),
-                ('status', models.CharField(choices=[('GAME_IN_PROGRESS', 'GAME_IN_PROGRESS'), ('GAME_WON', 'GAME_WON'), ('GAME_LOST', 'GAME_LOST')], max_length=100)),
-                ('masked_word', models.CharField(max_length=250)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.game')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='hangman_games', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("solution", models.CharField(max_length=250)),
+                ("attempts_left", models.IntegerField(default=6)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("GAME_IN_PROGRESS", "GAME_IN_PROGRESS"),
+                            ("GAME_WON", "GAME_WON"),
+                            ("GAME_LOST", "GAME_LOST"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                ("masked_word", models.CharField(max_length=250)),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="api.game"
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="hangman_games",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Score',
+            name="Score",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score', models.IntegerField()),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scores', to='api.game')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scores', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("score", models.IntegerField()),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="scores",
+                        to="api.game",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="scores",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-score'],
+                "ordering": ["-score"],
             },
         ),
     ]

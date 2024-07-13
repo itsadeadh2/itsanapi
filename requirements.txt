@@ -2,3 +2,5 @@ django
 djangorestframework
 pygments
 Faker
+flake8
+black

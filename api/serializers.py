@@ -7,14 +7,14 @@ from api.models import ContactRequest, GameType, HangmanGame, Project, Score
 class ContactRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactRequest
-        fields = ['id', 'email', 'created']
+        fields = ["id", "email", "created"]
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ["id", "username"]
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,8 +22,8 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = GameType
-        fields = ['id', 'name', 'slug']
-        lookup_field = 'slug'
+        fields = ["id", "name", "slug"]
+        lookup_field = "slug"
 
 
 class HangmanGameSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,18 +31,13 @@ class HangmanGameSerializer(serializers.HyperlinkedModelSerializer):
     attempts_left = serializers.ReadOnlyField()
     status = serializers.ReadOnlyField()
     masked_word = serializers.ReadOnlyField()
-    player = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+    player = serializers.HyperlinkedRelatedField(
+        view_name="user-detail", read_only=True
+    )
 
     class Meta:
         model = HangmanGame
-        fields = [
-            'id',
-            'solution',
-            'attempts_left',
-            'status',
-            'masked_word',
-            'player'
-        ]
+        fields = ["id", "solution", "attempts_left", "status", "masked_word", "player"]
 
     def get_solution(self, obj):
         if obj.status != HangmanGame.Status.IN_PROGRESS:
@@ -54,12 +49,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = [
-            'name',
-            'description',
-            'language',
-            'stack',
-            'github_link',
-            'docs_link'
+            "name",
+            "description",
+            "language",
+            "stack",
+            "github_link",
+            "docs_link",
         ]
         model = Project
 
@@ -69,13 +64,9 @@ class GuessSerializer(serializers.Serializer):
 
 
 class ScoreSerializer(serializers.ModelSerializer):
-    player = serializers.ReadOnlyField(source='player.username')
-    game = serializers.ReadOnlyField(source='game.name')
+    player = serializers.ReadOnlyField(source="player.username")
+    game = serializers.ReadOnlyField(source="game.name")
 
     class Meta:
-        fields = [
-            'score',
-            'player',
-            'game'
-        ]
+        fields = ["score", "player", "game"]
         model = Score
