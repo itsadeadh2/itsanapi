@@ -11,7 +11,7 @@ QUEUE_URL = env("QUEUE_URL")
 
 DEBUG = False
 
-SECRET_KEY = env('JWT_SECRET')
+SECRET_KEY = env('JWT_SECRET_KEY')
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
