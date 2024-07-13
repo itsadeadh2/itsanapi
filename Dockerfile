@@ -7,5 +7,4 @@ COPY . .
 RUN apk update && \
     apk add --no-cache iputils
 ENV DJANGO_SETTINGS_MODULE="itsanapi.settings.production"
-RUN python manage.py collectstatic
 CMD ["/bin/sh", "docker-entrypoint.sh"]
