@@ -4,7 +4,8 @@ import dj_database_url
 
 env = environ.Env(
     # Set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    QUEUE_URL=(str, '')
 )
 
 environ.Env.read_env(env_file=BASE_DIR / ".env")
