@@ -21,6 +21,8 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
 }
 
+ALLOWED_HOSTS = ['itsadeadh2.com']
+
 DATABASE_URL = env('DATABASE_URL')
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
