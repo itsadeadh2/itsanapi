@@ -1,7 +1,7 @@
 from .project import ProjectViewSet
 from .hangman import HangmanListView, HangmanDetailView, HangmanGuessView
 from .create_user import CreateUserView
-from .score import ScoreViewSet
+from .score import ScoreListView
 from .contact_request import CreateContactRequestView
 from .healthcheck import health_check
 from .login import CustomLoginView
@@ -12,7 +12,7 @@ __all__ = [
     "HangmanDetailView",
     "HangmanGuessView",
     "CreateUserView",
-    "ScoreViewSet",
+    "ScoreListView",
     "CreateContactRequestView",
     "health_check",
     "CustomLoginView"

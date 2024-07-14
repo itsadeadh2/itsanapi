@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions
+from rest_framework.generics import ListAPIView
 
 from api.models import Score
 from api.serializers import (
@@ -6,12 +7,11 @@ from api.serializers import (
 )
 
 
-class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
+class ScoreListView(ListAPIView):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
     authentication_classes = []
     permission_classes = [permissions.AllowAny]
-    lookup_field = "game__slug"
 
     def get_queryset(self):
         slug = self.request.query_params.get("filter", "")

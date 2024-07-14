@@ -39,6 +39,9 @@ class HangmanDetailView(RetrieveAPIView):
     serializer_class = HangmanGameSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return HangmanGame.objects.filter(player=user)
 
 class HangmanGuessView(CreateAPIView):
     queryset = HangmanGame.objects.all()
@@ -62,10 +65,15 @@ class HangmanGuessView(CreateAPIView):
                 {"message": "you already guessed this letter."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        except Exception:
+        except Exception as e:
+            print(e)
             return Response(
                 {
                     "message": "There was an error processing the guess. Please try again later."
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+    def get_queryset(self):
+        user = self.request.user
+        return HangmanGame.objects.filter(player=user)

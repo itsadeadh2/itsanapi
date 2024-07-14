@@ -37,3 +37,10 @@ if DATABASE_URL:
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 
 CSRF_TRUSTED_ORIGINS = ['https://*.itsadeadh2.com']
+CORS_ALLOWED_ORIGINS = [
+    'https://*.itsadeadh2.com',
+]
+CSRF_COOKIE_DOMAIN = ".itsadeadh2.com"
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+

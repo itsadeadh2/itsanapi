@@ -6,7 +6,6 @@ from api import views
 
 router = DefaultRouter()
 router.register(r"projects", views.ProjectViewSet, basename="project")
-router.register(r"scores", views.ScoreViewSet, basename="score")
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -22,4 +21,5 @@ urlpatterns = [
         name="hangman-guess",
     ),
     path("hangman/<int:pk>/", views.HangmanDetailView.as_view(), name="hangman-detail"),
+    path("scores/", views.ScoreListView.as_view(), name="score-list")
 ]

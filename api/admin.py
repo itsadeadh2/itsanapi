@@ -39,3 +39,11 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ["email", "first_name"]
     ordering = ["-date_joined"]
     show_facets = admin.ShowFacets.ALWAYS
+
+
+@admin.register(models.HangmanGame)
+class HangmanGameAdmin(admin.ModelAdmin):
+    list_display = ["player", "status", "solution", "attempts_left"]
+    list_filter = ["player", "status"]
+    search_fields = ["player"]
+    show_facets = admin.ShowFacets.ALWAYS
