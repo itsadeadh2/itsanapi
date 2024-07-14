@@ -10,8 +10,9 @@ router.register(r"scores", views.ScoreViewSet, basename="score")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("register/", views.CreateUserView.as_view(), name="register"),
+    path("login/csrf/", views.CustomLoginView.as_view(), name="login-csrf"),
+    path("login/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("contacts/", views.CreateContactRequestView.as_view(), name="contact"),
     path("health/", views.health_check, name="health"),
     path("hangman/", views.HangmanListView.as_view(), name="hangman-list"),

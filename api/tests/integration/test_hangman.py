@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from faker import Faker
 from rest_framework import status
@@ -13,6 +13,7 @@ class BaseHangman(APITestCase):
 
     def setUp(self):
         self.faker = Faker()
+        User = get_user_model()
         self.user = User.objects.get(id=1)
 
 

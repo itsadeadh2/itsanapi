@@ -4,6 +4,7 @@ from .create_user import CreateUserView
 from .score import ScoreViewSet
 from .contact_request import CreateContactRequestView
 from .healthcheck import health_check
+from .login import CustomLoginView
 
 __all__ = [
     "ProjectViewSet",
@@ -14,4 +15,5 @@ __all__ = [
     "ScoreViewSet",
     "CreateContactRequestView",
     "health_check",
+    "CustomLoginView"
 ]

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from rest_framework.generics import CreateAPIView
 
@@ -8,7 +8,7 @@ from api.serializers import (
 
 
 class CreateUserView(CreateAPIView):
-    model = User
+    model = get_user_model()
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
     serializer_class = UserRegistrationSerializer

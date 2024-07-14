@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class HangmanGame(models.Model):
@@ -13,7 +14,7 @@ class HangmanGame(models.Model):
     masked_word = models.CharField(blank=False, max_length=250)
     game = models.ForeignKey("GameType", on_delete=models.CASCADE)
     player = models.ForeignKey(
-        "auth.User", related_name="hangman_games", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, related_name="hangman_games", on_delete=models.CASCADE
     )
 
     @staticmethod
