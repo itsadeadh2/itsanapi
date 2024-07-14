@@ -49,7 +49,7 @@ Resources:
   # Define the EFS File System
   EFSFileSystem:
     Type: AWS::EFS::FileSystem
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       PerformanceMode: generalPurpose
       Encrypted: true
