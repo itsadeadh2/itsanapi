@@ -21,7 +21,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
 }
 
-ALLOWED_HOSTS = ['itsadeadh2.com']
+ALLOWED_HOSTS = ['itsadeadh2.com', 'api.itsadeadh2.com']
 
 METADATA_URI = env('ECS_CONTAINER_METADATA_URI')
 print(f"METADATA URI: {METADATA_URI}")
