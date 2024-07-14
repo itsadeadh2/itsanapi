@@ -35,3 +35,5 @@ print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 DATABASE_URL = env('DATABASE_URL')
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
+
+CSRF_TRUSTED_ORIGINS = ['https://*.itsadeadh2.com']
