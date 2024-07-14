@@ -24,6 +24,8 @@ healthcheck() {
 HEALTHCHECK_HOST="postgres.itsanapi-ecs.local"
 
 if healthcheck $HEALTHCHECK_HOST; then
+  echo "Sleeping for 30 seconds."
+  sleep 30
   python manage.py migrate
   python manage.py collectstatic --noinput
 
