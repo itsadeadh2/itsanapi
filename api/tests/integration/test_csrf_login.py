@@ -48,6 +48,12 @@ class CSRFLoginTests(APITestCase):
         response = self.client.post(self.url, data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        csrf = response.cookies.get('csrftoken').value
+        self.client.credentials(HTTP_X_CSRFTOKEN=csrf)
+        hangman_url = reverse("hangman-list")
+        response = self.client.post(hangman_url, data=None, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_login_failure_on_wrong_credentials(self):
         data = {
             "email": self.user.email,

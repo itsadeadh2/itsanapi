@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from rest_framework import permissions
@@ -18,7 +18,7 @@ class CustomLoginView(APIView):
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
-            # Successful authentication
+            login(self.request, user)
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         else:
             # Authentication failed
