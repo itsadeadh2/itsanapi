@@ -27,7 +27,9 @@ if healthcheck $HEALTHCHECK_HOST; then
   python manage.py migrate
   python manage.py collectstatic --noinput
 
-  exec gunicorn --bind 0.0.0.0:80 "itsanapi.wsgi:application" \
+  exec nginx
+
+  exec gunicorn --bind 0.0.0.0:8000 "itsanapi.wsgi:application" \
     --access-logfile - \
     --error-logfile - \
     --log-level $LOG_LEVEL
