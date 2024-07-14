@@ -15,6 +15,6 @@
 - [x] Add local development configuration
 - [x] Implement hangman game
 - [x] Change email storage to RDS
-- [ ] Implement projects endpoint
-- [ ] OAuth again?
-- [ ] Send sqs
+- [x] Implement projects endpoint
+- [ ] Retrieve latest user game
+- [ ] Return name instead of email in scores
