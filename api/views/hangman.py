@@ -43,6 +43,7 @@ class HangmanDetailView(RetrieveAPIView):
         user = self.request.user
         return HangmanGame.objects.filter(player=user)
 
+
 class HangmanGuessView(CreateAPIView):
     queryset = HangmanGame.objects.all()
     serializer_class = HangmanGameSerializer
