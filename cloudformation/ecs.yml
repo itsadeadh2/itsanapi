@@ -53,6 +53,9 @@ Resources:
     Properties:
       PerformanceMode: generalPurpose
       Encrypted: true
+      FileSystemTags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}"
 
   # EFS Mount Targets
   EFSMountTarget1:
