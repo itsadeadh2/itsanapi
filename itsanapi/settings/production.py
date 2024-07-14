@@ -23,17 +23,12 @@ SIMPLE_JWT = {
 
 ALLOWED_HOSTS = ['itsadeadh2.com']
 
-EC2_PRIVATE_IP = None
-try:
-    EC2_PRIVATE_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
-except requests.exceptions.RequestException:
-    pass
-
-print(f'EC2_PRIVATE_IP: {EC2_PRIVATE_IP}')
-
-
-if EC2_PRIVATE_IP:
-    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+METADATA_URI = env('ECS_CONTAINER_METADATA_URI')
+print(f"METADATA URI: {METADATA_URI}")
+if METADATA_URI:
+    container_metadata = requests.get(METADATA_URI).json()
+    print(f"Container Metadata: {container_metadata}")
+    ALLOWED_HOSTS.append(container_metadata['Networks'][0]['IPv4Addresses'][0])
 
 print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
