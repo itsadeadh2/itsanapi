@@ -4,7 +4,7 @@ from api.models import Score
 
 
 class ScoreSerializer(serializers.ModelSerializer):
-    player = serializers.ReadOnlyField(source="player.email")
+    player = serializers.ReadOnlyField(source="player.first_name")
     game = serializers.ReadOnlyField(source="game.name")
 
     class Meta:

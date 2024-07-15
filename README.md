@@ -16,5 +16,5 @@
 - [x] Implement hangman game
 - [x] Change email storage to RDS
 - [x] Implement projects endpoint
-- [ ] Retrieve latest user game
-- [ ] Return name instead of email in scores
+- [x] Retrieve latest user game
+- [x] Return name instead of email in scores
