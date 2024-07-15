@@ -14,6 +14,7 @@ class HangmanListView(CreateAPIView, ListAPIView):
     queryset = HangmanGame.objects.all()
     serializer_class = HangmanGameSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['status']
 
     def create(self, request, *args, **kwargs):
         try:

@@ -45,6 +45,29 @@ class HangmanTests(BaseHangman):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_retrieve_latest(self):
+        url = reverse("hangman-list")
+
+        # create two games for an authenticated user
+        self.client.force_authenticate(user=self.user)
+        game1 = self.client.post(url, format="json").json()
+        game2 = self.client.post(url, format="json").json()
+
+        # set game1 as lost
+        game1_in_db = HangmanGame.objects.get(pk=game1.get("id"))
+        game1_in_db.status = HangmanGame.Status.LOST
+        game1_in_db.save()
+        in_progress_filter = {"status": "GAME_IN_PROGRESS"}
+
+        # request games that are in progress
+        response = self.client.get(url, in_progress_filter, format="json")
+        in_progress_games = response.json()
+
+        # should only return game2
+        self.assertTrue(len(in_progress_games), 1)
+        self.assertEqual(in_progress_games[0].get('id'), game2.get('id'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class HangmanGuessTests(BaseHangman):
     def setUp(self):
