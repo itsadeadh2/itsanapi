@@ -40,6 +40,7 @@ CSRF_TRUSTED_ORIGINS = ['https://*.itsadeadh2.com', 'https://commodore.itsadeadh
 CORS_ALLOWED_ORIGINS = [
     'https://*.itsadeadh2.com',
     'https://commodore.itsadeadh2.com',
+    'https://itsadeadh2.com',
 ]
 CSRF_COOKIE_DOMAIN = ".itsadeadh2.com"
 CSRF_COOKIE_SAMESITE = "None"
